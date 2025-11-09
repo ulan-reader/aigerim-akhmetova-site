@@ -1,0 +1,408 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+const before_after = (await getCollection('before_after'));
+// Массив объектов с фото
+const photos = [
+  {
+    before: "https://images.squarespace-cdn.com/content/v1/5e38930cd88e941c1525fa36/1584138443710-8B7VA9O4V5NUNSFKQH9H/ba19.jpg",
+    after: "https://images.squarespace-cdn.com/content/v1/5e38930cd88e941c1525fa36/1584138446977-JI3G6V3D1DFLY4E17LX3/ba19a.jpg",
+  },
+  {
+    before: "https://picsum.photos/id/1012/800/600",
+    after: "https://picsum.photos/id/1011/800/600",
+  },
+  {
+    before: "https://picsum.photos/id/1016/800/600",
+    after: "https://picsum.photos/id/1015/800/600",
+  },
+];
+---
+
+<BaseLayout title="Before and After">
+  <div class="content-section">
+    <div class="content-text">
+      <h1>BEFORE & AFTER</h1>
+      <em>
+        Sometimes it’s difficult to describe what a stylist does.
+        <br />
+        This gallery explains it better than words can.
+      </em>
+    </div>
+  </div>
+
+  <div class="ba-gallery">
+    {before_after.map((item) => (
+      <div class="ba-card">
+        <div class="ba-container">
+          <img src={item.data.after} class="after" />
+          <img src={item.data.before} class="before" />
+          <div class="ba-handle" draggable="false"></div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <script>
+    // window.addEventListener('load', () => {
+    //   document.querySelectorAll<HTMLElement>('.ba-container').forEach((container) => {
+    //     const before = container.querySelector<HTMLImageElement>('.before');
+    //     const handle = container.querySelector<HTMLDivElement>('.ba-handle');
+
+    //      // проверка на null
+
+    //     function setPosition(x: number) {
+    //       const rect = container.getBoundingClientRect();
+    //       let offset = x - rect.left;
+    //       if (offset < 0) offset = 0;
+    //       if (offset > rect.width) offset = rect.width;
+    //       const percent = (offset / rect.width) * 100;
+    //       if (!before || !handle) return;
+    //       before.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+    //       handle.style.left = `${offset}px`;
+    //     }
+
+    //     let dragging = false;
+    //     if (!handle) return;
+    //     handle.addEventListener('mousedown', () => (dragging = true));
+    //     window.addEventListener('mouseup', () => (dragging = false));
+
+    //     window.addEventListener('mousemove', (e: MouseEvent) => {
+    //       if (dragging) setPosition(e.clientX);
+    //     });
+
+    //     container.addEventListener('click', (e: MouseEvent) => setPosition(e.clientX));
+
+    //     // центрируем линию при загрузке
+    //     // setTimeout(() => {
+    //     //   setPosition(container.offsetWidth / 2);
+    //     // }, 100);
+    //   });
+    // });
+    window.addEventListener('load', () => {
+    document.querySelectorAll('.ba-container').forEach((container) => {
+        const before = container.querySelector<HTMLImageElement>('.before');
+        const handle = container.querySelector<HTMLImageElement>('.ba-handle');
+        if (!before || !handle) return;
+
+        function setPosition(x:number) {
+          
+          const rect = container.getBoundingClientRect();
+          let offset = x - rect.left;
+          offset = Math.max(0, Math.min(offset, rect.width));
+          const percent = (offset / rect.width) * 100;
+          if (!before || !handle) return;
+          before.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+          handle.style.left = `${offset}px`;
+        }
+
+        let dragging = false;
+
+        const start = (e: MouseEvent | TouchEvent) => {
+          dragging = true;
+          if ('touches' in e) setPosition(e.touches[0].clientX);
+          else setPosition((e as MouseEvent).clientX);
+        };
+
+        const move = (e: MouseEvent | TouchEvent) => {
+          if (!dragging) return;
+          if ('touches' in e) setPosition(e.touches[0].clientX);
+          else setPosition((e as MouseEvent).clientX);
+        };
+
+        const stop = () => (dragging = false);
+
+        handle.addEventListener('mousedown', start);
+        handle.addEventListener('touchstart', start);
+        window.addEventListener('mousemove', move);
+        window.addEventListener('touchmove', move);
+        window.addEventListener('mouseup', stop);
+        window.addEventListener('touchend', stop);
+
+        // Автоцентрирование при загрузке
+        // setTimeout(() => setPosition((container as HTMLElement).offsetWidth / 2), 200);
+      });
+    });
+
+  </script>
+
+</BaseLayout>
+
+<style>
+  .ba-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+    gap: 2rem;
+    padding: 2rem 5%;
+  }
+  @media (max-width: 768px) {
+    .ba-gallery {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .ba-handle {
+      width: 6px;
+    }
+
+    .ba-handle::before {
+      width: 56px;
+      height: 56px;
+    }
+
+    .content-section {
+      padding: 4vmax 2vw;
+    }
+
+    .ba-card {
+      border-radius: 12px;
+    }
+  }
+  .ba-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .ba-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+  }
+
+  .ba-container {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    overflow: hidden;
+    /* transform: scale(0.85); 0.85 = 85% от исходного размера */
+    /* transform-origin: center; */
+  }
+
+  .ba-container,
+  .ba-container * {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .ba-container img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    transform: translate(-50%, -50%);
+    background-color: #000;
+  }
+
+  .ba-container .before {
+    clip-path: inset(0 50% 0 0);
+  }
+
+  .ba-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    background: #fff;
+    cursor: ew-resize;
+    z-index: 10;
+    transition: background 0.2s ease;
+  }
+
+  .ba-handle:hover {
+    background: #ff5f5f;
+  }
+
+  .ba-handle::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #fff;
+  }
+
+  .content-section {
+    padding: 6.6vmax 4vw;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .content-text {
+    text-align: center;
+    gap: 32px;
+  }
+
+  .content-text h1 {
+    font-size: calc(3 * 1.2vw + 1rem);
+    line-height: 100%;
+    font-family: 'GS Black' !important;
+    letter-spacing: 1px;
+  }
+
+  .content-text em {
+    font-size: calc((1.2 - 1) * 1.2vw + 1rem);
+    color: #333;
+  }
+</style>
+
+<!-- ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+---
+
+<BaseLayout title="Before and After">
+    <div class="content-section">
+            <div class="content-text">
+                <h1>BEFORE & AFTER</h1>
+                <em>Sometimes it’s difficult to describe what a stylist does.
+                    <br />
+    This gallery explains it better than words can.</em>
+            </div>
+        </div>
+
+    <div class="ba-container" id="ba">
+        <img src="https://images.squarespace-cdn.com/content/v1/5e38930cd88e941c1525fa36/1584138446977-JI3G6V3D1DFLY4E17LX3/ba19a.jpg" class="after">
+        <img src="https://images.squarespace-cdn.com/content/v1/5e38930cd88e941c1525fa36/1584138443710-8B7VA9O4V5NUNSFKQH9H/ba19.jpg" class="before">
+        <div class="ba-handle" id="handle" draggable="false"></div>
+
+    </div>
+
+    <script>
+        const container = document.getElementById('ba');
+        const before = container ? container.querySelector('.before') as HTMLElement : null;
+        const handle = document.getElementById('handle');
+
+        function setPosition(x: number) {
+            if (!container || !before || !handle) return;
+            const rect = container.getBoundingClientRect();
+            let offset = x - rect.left;
+            if (offset < 0) offset = 0;
+            if (offset > rect.width) offset = rect.width;
+            handle.addEventListener("dragstart", e => e.preventDefault());
+            let percent = (offset / rect.width) * 100;
+            before.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            handle.style.left = offset + "px";
+        }
+
+        let dragging = false;
+
+        if (handle) {
+            handle.addEventListener('mousedown', () => dragging = true);
+        }
+        window.addEventListener('mouseup', () => dragging = false);
+        window.addEventListener('mousemove', e => {
+            if (dragging) setPosition(e.clientX);
+        });
+
+        // поддержка клика по любому месту
+        if (container) {
+            container.addEventListener('click', e => setPosition(e.clientX));
+        }
+    </script>
+</BaseLayout>
+
+
+<style>
+    /* body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #eee;
+        height: 100vh;
+        margin: 0;
+    } */
+
+    .ba-container {
+        position: relative;
+        /* width: 800px;
+        height: 500px; */
+        aspect-ratio: 16 / 9;
+        width: 100%;
+        /* height: 100%; */
+        overflow: hidden;
+        padding: 2rem 5%;
+    }
+
+    .ba-container, 
+    .ba-container * {
+        user-select: none;       /* запрет выделения текста */
+        -webkit-user-drag: none; /* запрет drag картинок в Safari/Chrome */
+    }
+
+    .ba-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .ba-container .before {
+        clip-path: inset(0 50% 0 0); /* левая половина */
+    }
+
+    .ba-handle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 4px;
+        background: #fff;
+        cursor: ew-resize;
+        z-index: 10;
+    }
+
+    .ba-handle::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.6);
+        border: 2px solid #fff;
+    }
+
+
+    .content-section {
+        padding: 6.6vmax 4vw;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    .content-text {
+        text-align: center;
+        gap: 32px;
+    }
+
+    .content-text h1 {
+        font-size: calc(3 * 1.2vw + 1rem);
+        line-height: 100%;
+        font-family: 'GS Black' !important;
+        letter-spacing: 1px;
+    }
+
+    .content-text em {
+        font-size: calc((1.2 - 1) * 1.2vw + 1rem);
+        color: #333;
+    }
+</style> -->

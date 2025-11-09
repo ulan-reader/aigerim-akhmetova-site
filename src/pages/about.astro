@@ -1,0 +1,559 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import { getCollection } from 'astro:content';
+const clients = (await getCollection('clients')); 
+
+const p_1_text = 'My passion for transforming spaces began with my artistic and architectural education. I believe every space holds a unique narrative, waiting to be beautifully told and masterfully presented.'
+const p_2_text = 'My journey includes three formative years in interior design and decorating, where I honed my understanding of aesthetics and functionality. The past three years have been dedicated to interior photography production and styling, working alongside leading photographers and designers worldwide. This extensive experience spans a portfolio of distinguished projects and has resulted in numerous international publications, solidifying my expertise in elevating spaces for editorial acclaim. My unique value proposition lies in my role as a creative director for each project\'s visual narrative. I deeply cherish these projects, convinced that every detail and decorative element can expand upon the designer\'s philosophy and unveil the space\'s authentic story. My goal is to ensure each project achieves its highest visual potential and gains global recognition. My expertise encompasses meticulous on-set styling, expert prop sourcing, and strategic guidance for publication, transforming projects into award-winning, widely celebrated features.'
+const em_1_text = 'P.S. I still believe in the magic of transformation and the power of a perfectly placed detail.'
+---
+
+<BaseLayout title="About Aigerim Akhmetova">
+    <div class="page">
+        <section class="hero">
+            <h1>AIGERIM AKHMETOVA</h1>
+            <h4><em>Interior Stylist & Decorator</em></h4>
+        </section>
+
+        <section class="about">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img alt="Interior styling example" src="/assets/15.jpg"/>
+                </div>
+                <div class="about-text">
+                    <p class="about-quote">
+                        <em>From Concept to Cover: The Art of Honoring & Amplifying Every Interior's Unique Story</em>
+                    </p>
+                    <p>{p_1_text}</p>
+                    <p>{p_2_text}</p>
+                    <p><em>{em_1_text}</em></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="clients">
+            <h2>SELECT CLIENT LIST</h2>
+            <div class="carousel">
+                <div id="viewport" class="carousel-viewport">
+                    <div id="track" class="carousel-track">
+                        {clients.map((c, i) => (
+                        <div class="carousel-item" data-index={i}>
+                            <a href={c.data.link} target="_blank" rel="noopener noreferrer">
+                            <p>{c.data.title}</p>
+                            </a>
+                        </div>
+                        ))}
+                    </div>
+                </div>
+
+                <!-- Центрированные кнопки внизу -->
+                <div class="carousel-controls">
+                    <button id="prev" class="nav-btn">‹</button>
+                    <button id="next" class="nav-btn">›</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- <section class="gallery">
+            <div class="gallery-wrapper">
+                <div class="gallery-list"></div>
+                <div class="gallery-controls"></div>
+            </div>
+        </section> -->
+
+        <!-- <section class="cta">
+            <h3><a href="/">Work with me, people.</a></h3>
+        </section> -->
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const track = document.getElementById('track');
+            const viewport = document.getElementById('viewport');
+            const next = document.getElementById('next');
+            const prev = document.getElementById('prev');
+            if (!track || !viewport || !next || !prev) return;
+
+            let items = Array.from(track.children);
+            if (!items.length) return;
+
+            let index = 0;
+            let slideWidth = computeSlideWidth();
+
+            // ставим начальный оффсет (на случай, если карточки центрируются)
+            applyTransform();
+
+            next.addEventListener('click', () => {
+                index = (index + 1) % items.length;
+                applyTransform();
+            });
+
+            prev.addEventListener('click', () => {
+                index = (index - 1 + items.length) % items.length;
+                applyTransform();
+            });
+
+            // пересчитать при ресайзе (важно для резины)
+            window.addEventListener('resize', () => {
+                slideWidth = computeSlideWidth();
+                applyTransform();
+            });
+
+            function computeSlideWidth() {
+                const first = items[0];
+                const style = getComputedStyle(first);
+                const marginLeft = parseFloat(style.marginLeft) || 0;
+                const marginRight = parseFloat(style.marginRight) || 0;
+                // ширина карточки + боковые отступы
+                return first.getBoundingClientRect().width + marginLeft + marginRight;
+            }
+
+            function applyTransform() {
+            // хотим центрировать активную карточку в вьюпорте
+                if (!track || !viewport || !next || !prev) return;
+                const viewportWidth = viewport.getBoundingClientRect().width;
+                const offset = index * slideWidth;
+                const centerOffset = (viewportWidth - slideWidth) / 2;
+                track.style.transform = `translateX(${ -offset + centerOffset }px)`;
+                // подсветка активной карточки (удобно в дизайне)
+                items.forEach((it, i) => it.classList.toggle('is-active', i === index));
+            }
+        });
+    </script>
+</BaseLayout>
+
+<style>
+    .clients {
+        padding: 48px 16px;
+        text-align: center;
+        /* background: linear-gradient(180deg,#fbfbfd,#f3f7ff); */
+        font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        color: #111827;
+    }
+
+    .clients h2 {
+        font-size: 20px;
+        margin-bottom: 18px;
+        letter-spacing: .06em;
+        font-weight: 700;
+    }
+
+    /* ===== Каркас карусели ===== */
+    .carousel {
+        position: relative;
+        max-width: 1800px;
+        margin: 0 auto;
+    }
+
+    .carousel-viewport {
+        overflow: hidden;
+        width: 100%;
+        padding: 24px 0;
+    }
+
+    /* Трек — гибкий ряд карточек */
+    .carousel-track {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        transition: transform 480ms cubic-bezier(.22,.9,.34,1);
+        will-change: transform;
+        padding: 8px 24px; /* немного внутреннего пространства */
+    }
+
+    /* ===== Карточки ===== */
+    .carousel-item {
+        flex: 0 0 auto;
+        width: 220px;
+        min-width: 160px;
+        max-width: 260px;
+        padding: 18px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #ffffff, #f7fbff);
+        box-shadow: 0 6px 18px rgba(16,24,40,0.06);
+        text-align: center;
+        transition: transform 260ms ease, box-shadow 260ms ease;
+        cursor: pointer;
+        border: 1px solid rgba(15,23,42,0.03);
+    }
+
+    /* Активная карточка чуть выше и ярче */
+    .carousel-item.is-active {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 10px 28px rgba(16,24,40,0.12);
+        background: linear-gradient(135deg,#ffffff,#eef6ff);
+    }
+
+    /* Ссылка и текст */
+    .carousel-item a { color: inherit; text-decoration: none; display:block; }
+    .carousel-item p {
+        margin: 0;
+        font-weight: 600;
+        font-size: 15px;
+        color: #0f172a;
+        line-height: 1;
+    }
+
+    /* ===== Центрированные кнопки внизу ===== */
+    .carousel-controls {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -40px; /* немного выступают под карусель */
+        display: flex;
+        gap: 12px;
+        background: transparent;
+        padding: 6px;
+        z-index: 20;
+    }
+
+    /* Кнопки — стиль "пилл" */
+    .nav-btn {
+        display: inline-grid;
+        place-items: center;
+        width: 46px;
+        height: 46px;
+        border-radius: 999px;
+        border: none;
+        background: linear-gradient(180deg,#fff,#f1f5f9);
+        box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+        cursor: pointer;
+        font-size: 22px;
+        color: #0f172a;
+        transition: transform .14s ease, box-shadow .14s ease;
+    }
+
+    .nav-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(2,6,23,0.12); }
+    .nav-btn:active { transform: translateY(0); }
+
+    /* Адаптив */
+    @media (max-width: 720px) {
+        .carousel-track { gap: 12px; padding: 8px 12px; }
+        .carousel-item { width: 160px; padding: 14px; border-radius: 12px; }
+        .carousel-controls { bottom: -14px; gap: 8px; }
+        .nav-btn { width: 40px; height: 40px; font-size: 18px; }
+    }
+
+
+
+    .page {
+        font-family: 'Inter', sans-serif;
+        color: #222;
+        line-height: 1.6;
+    }
+
+    /* HERO */
+    .hero {
+        text-align: center;
+        padding: 6vmax 2rem 4vmax;
+        background: black;
+        color: white;
+        background-image: url('/assets/FM_PresidentPark_13.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .hero h1 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-family: 'GS Black', sans-serif;
+        letter-spacing: 1px;
+        margin: 0;
+        line-height: 100%;
+    }
+    .hero h4 {
+        font-size: 1.25rem;
+        font-weight: 400;
+        margin-top: .5rem;
+    }
+
+    /* ABOUT */
+    .about {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 5vmax 2rem;
+    }
+    .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+    }
+    .about-quote {
+        font-size: clamp(1.25rem, 2vw, 1.75rem);
+        font-style: italic;
+        margin-bottom: 1.5rem;
+        color: #444;
+    }
+    .about-text p {
+        margin: 0 0 1.5rem;
+    }
+    .about-image img {
+        width: 100%;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+
+    /* CLIENTS */
+    .clients {
+        padding: 4vmax 2rem;
+        text-align: center;
+    }
+    .clients h2 {
+        font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+        font-family: 'Orpheus Pro', serif;
+        margin: 0;
+    }
+
+    /* GALLERY */
+    .gallery {
+        padding: 4vmax 2rem;
+    }
+    .gallery-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    /* CTA */
+    .cta {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #253551;
+        color: white;
+        padding: 4rem 2rem;
+    }
+    .cta a {
+        color: inherit;
+        font-size: clamp(1.25rem, 2vw, 1.75rem);
+        text-decoration: underline;
+        font-weight: 200;
+        background-repeat: unset;
+        background-image: unset;
+        background-size: unset;
+        background-position: unset;
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+        text-decoration-color: currentColor;
+        text-decoration-thickness: 1px;
+        text-underline-offset: .2em;
+        text-decoration-skip: auto;
+        text-decoration-skip-ink: auto;
+    }
+
+    @media (max-width: 768px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .about-image {
+            order: -1;
+        }
+        
+        .about-image img {
+            height: auto;
+        }
+    }
+</style>
+
+<!-- ---
+import Header from "../components/Header.astro"
+import Footer from "../components/Footer.astro"
+
+const p_1_text = 'My passion for transforming spaces began with my artistic and architectural education. I believe every space holds a unique narrative, waiting to be beautifully told and masterfully presented.'
+const p_2_text = 'My journey includes three formative years in interior design and decorating, where I honed my understanding of aesthetics and functionality. The past three years have been dedicated to interior photography production and styling, working alongside leading photographers and designers worldwide. This extensive experience spans a portfolio of distinguished projects and has resulted in numerous international publications, solidifying my expertise in elevating spaces for editorial acclaim. My unique value proposition lies in my role as a creative director for each project\'s visual narrative. I deeply cherish these projects, convinced that every detail and decorative element can expand upon the designer\'s philosophy and unveil the space\'s authentic story. My goal is to ensure each project achieves its highest visual potential and gains global recognition. My expertise encompasses meticulous on-set styling, expert prop sourcing, and strategic guidance for publication, transforming projects into award-winning, widely celebrated features.'
+const em_1_text = 'P.S. I still believe in the magic of transformation and the power of a perfectly placed detail.'
+---
+
+<Header />
+<div>
+    <div class="border-section">
+        <div class="border-content"> 
+            <h1>AIGERIM AKHMETOVA</h1>
+            <h4>
+                <em>Interior Stylist & Decorator</em>
+            </h4>
+        </div>
+    </div>
+    <div class="content-section">
+        <div class="content-grid">
+            <div class="content-text">
+                <div class="content-text-em">
+                    <em>From Concept to Cover: The Art of Honoring & Amplifying Every Interior's Unique Story</em>
+                </div>
+                <div class="content-text-inner">
+                    <p>{p_1_text}</p>
+                    <p>{p_2_text}</p>
+                    <em>{em_1_text}</em>
+                </div>
+            </div>
+            <div class="content-image">
+                <img alt="" src=""/>
+            </div>
+        </div>
+    </div>
+    <div class="client-list">
+        <h2>SELECT CLIENT LIST</h2>
+    </div>
+    <div class="gallery-reel">
+        <div class="gallery-reel-wrapper">
+            <div class="gallery-reel-list"></div>
+            <div class="gallery-reel-controls"></div>
+        </div>
+    </div>
+
+    <div class="work">
+        <div class="work-content">
+            <h3>
+                <a href="/">
+                    Work with me, people.
+                </a>
+            </h3>
+        </div>
+    </div>
+</div>
+<Footer />
+
+<style>
+    h1 {
+        line-height: 100%;
+        font-family: 'GS Black' !important;
+        letter-spacing: 1px;
+
+        /* margin: 0 0 32px; */
+        margin: 0;
+        /* color: white; */
+        width: 100%;
+        font-size: calc((2.2 - 1) * 1.2vw + 1rem);
+    }
+
+    h4 {
+        font-size: 24px;
+        /* margin: 32px 0 0; */
+        margin: 0;
+        /* color: white; */
+        width: 100%;
+    }
+
+    h3 {
+        font-weight: 200;
+        font-size: calc(1.2 * 1.2vw + 1rem);
+    }
+
+    .border-section {
+        width: 100%;
+    }
+
+    .border-content {
+        padding: 6.6vmax 4vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 32px;
+
+        color: black;
+    }
+
+    .content-section {
+        padding: 6.6vmax 4vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* max-width: 380px; */;
+    }
+
+    .content-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: start;
+        /* width: 500px; */
+    }
+
+    .content-text-em {
+        /* position: absolute;
+        top: 0;
+        left: 0; */
+        font-style: italic;
+        line-height: 1.5;
+        font-size: calc((2.2 - 1) * 1.2vw + 1rem);
+        font-weight: 400;
+        width: 100%;
+        height: 100px;
+        text-align: left;
+        position: relative;
+        padding: 0 5%;
+    }
+
+    .content-text-em em {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 110%;
+        text-align: left;
+    }
+
+    /* .content-text-inner {
+        padding-top: 20px;
+    } */
+
+    .content-text div {
+        /* padding: 0 5%; */
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .content-text div p {
+        line-height: 1.6em;
+        margin: 0;
+    }
+
+    .client-list {
+        /* padding-top: calc(10vmax / 5); */
+        padding: calc(10vmax / 5) 4vw 0;
+    }
+
+    .client-list h2 {
+        margin: 0;
+        text-align: center;
+        white-space: pre-wrap;
+        font-size: calc((2.8 - 1) * 1.2vw + 1rem);
+        font-family: 'orpheus-pro';
+    }
+
+    .work {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 240px;
+        background-color: #253551;
+        color: white;
+    }
+
+    .work a {
+        color: white;
+        background-repeat: unset;
+        background-image: unset;
+        background-size: unset;
+        background-position: unset;
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+        text-decoration-color: currentColor;
+        text-decoration-thickness: 1px;
+        text-underline-offset: .2em;
+        text-decoration-skip: auto;
+        text-decoration-skip-ink: auto;
+    }
+
+</style> -->
