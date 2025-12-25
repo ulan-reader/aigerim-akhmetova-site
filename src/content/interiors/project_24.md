@@ -3,9 +3,10 @@ title: 'Samal'
 slug: 'project-24'
 position: 24
 mainPhoto: './project_cover_24.jpg'
-interiorDesign: 'IDA designmates'
+asSeenIn: 'Elle Decoration'
+interiorDesign: 'Yana Malygina'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_24/YM_Lumiere_1.jpg'
   - '/assets/projects_24/YM_Lumiere_12.jpg'

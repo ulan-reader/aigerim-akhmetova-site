@@ -3,9 +3,10 @@ title: '(180 sq m) Crafted Living in Almaty'
 slug: 'project-12'
 position: 12
 mainPhoto: './project_cover_12.jpg'
-interiorDesign: 'Oxana Mazurina'
+asSeenIn: 'Architectural Digest'
+interiorDesign: 'Assel Baimakhan'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_12/AB_AV_1.jpg'
   - '/assets/projects_12/AB_AV_14.jpg'

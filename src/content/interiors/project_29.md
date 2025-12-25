@@ -1,11 +1,12 @@
 ---
 title: 'Apartment “Rooftop”'
-slug: 'project-29'
-position: 29
+slug: 'project-17'
+position: 17
 mainPhoto: './project_cover_29.jpg'
-interiorDesign: 'Kvadrat Architects'
+interiorDesign: 'Yana Malygina'
+asSeenIn: 'Elle Decoration'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_29/YANA_MALYGINA_Edelveis_18.jpg'
   - '/assets/projects_29/YANA_MALYGINA_Edelveis_39.jpg'

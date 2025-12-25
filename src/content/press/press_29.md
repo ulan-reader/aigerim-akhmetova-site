@@ -1,5 +1,6 @@
 ---
-title: "Mydecor \nЖания Ерен"
+id: 28
+title: "Mydecor"
 type: "press"
 heroImage: "29.png"
 link: "https://mydecor.ru/interior/flats/kvartira-60-m-s-parizhskim-nastroeniem-v-alma-ate/"

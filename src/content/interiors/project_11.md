@@ -3,9 +3,10 @@ title: 'Villa Dzhailay 16500 sq ft'
 slug: 'project-11'
 position: 11
 mainPhoto: './project_cover_11.jpg'
+asSeenIn: 'Dwell'
 interiorDesign: 'Alena Krasatulina'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_11/AK_11.jpg'
   - '/assets/projects_11/AK_18.jpg'

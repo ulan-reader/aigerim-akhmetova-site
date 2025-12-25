@@ -3,9 +3,10 @@ title: 'Dark & Stylish 95m² (1,022 sq ft) Apartment for a Young Couple'
 slug: 'project-15'
 position: 15
 mainPhoto: './project_cover_15.jpg'
+asSeenIn: 'WA'
 interiorDesign: 'Kvadrat Architects'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_15/Kvadrat_Turkuaz_1.jpg'
   - '/assets/projects_15/Kvadrat_Turkuaz_10.jpg'

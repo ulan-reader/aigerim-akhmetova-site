@@ -3,9 +3,10 @@ title: 'Villa Edelweiss'
 slug: 'project-13'
 position: 13
 mainPhoto: './project_cover_13.jpg'
-interiorDesign: 'Zaure Buzdayeva'
+asSeenIn: 'Elle Decoration'
+interiorDesign: 'Oxana Mazurina'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_13/OM_ZH_23.jpg'
   - '/assets/projects_13/OM_ZH_29.jpg'

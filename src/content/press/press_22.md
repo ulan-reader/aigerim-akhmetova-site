@@ -1,4 +1,5 @@
 ---
+id: 17
 title: "Yinjispace"
 type: "press"
 heroImage: "22.png"

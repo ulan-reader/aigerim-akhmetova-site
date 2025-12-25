@@ -3,9 +3,10 @@ title: 'Mountain House / Almaty, Kazakhstan'
 slug: 'project-22'
 position: 22
 mainPhoto: './project_cover_22.jpg'
-interiorDesign: 'IDA designmates'
+asSeenIn: 'Dwell'
+interiorDesign: 'Assel Baimakhan'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_22/AB_Mountain Sun2_14.jpg'
   - '/assets/projects_22/AB_Mountain Sun2_16.jpg'

@@ -3,6 +3,7 @@ title: 'Light-Filled Apartment, 1023 sq ft (95 sq m)'
 slug: 'project-20'
 position: 20
 mainPhoto: './project_cover_20.jpg'
+asSeenIn: 'I+D'
 interiorDesign: 'Alena Krasatulina'
 photography: 'Damir Otegen'
 styling: 'Aigerim Akhmetova'

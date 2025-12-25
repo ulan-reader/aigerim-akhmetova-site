@@ -12,6 +12,7 @@
     "@tailwindcss/vite": "^4.1.12",
     "astro": "^5.13.4",
     "nanostores": "^1.0.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.12"
   }
 }

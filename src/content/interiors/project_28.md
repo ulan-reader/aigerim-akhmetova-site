@@ -1,11 +1,12 @@
 ---
 title: 'Villa Edelweiss'
-slug: 'project-28'
-position: 28
+slug: 'project-16'
+position: 16
 mainPhoto: './project_cover_28.jpg'
-interiorDesign: 'Zaure Buzdayeva'
+asSeenIn: 'WA'
+interiorDesign: 'Yana Malygina'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_28/YANAMALYGINA_LAVERDE_11.jpg'
   - '/assets/projects_28/YANAMALYGINA_LAVERDE_15.jpg'

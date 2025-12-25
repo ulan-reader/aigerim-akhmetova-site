@@ -1,9 +1,10 @@
 ---
 title: 'Elegant Apartment in Neoclassical Style'
-slug: 'project-18'
-position: 18
+slug: 'project-30'
+position: 30
 mainPhoto: './project_cover_18.jpg'
-interiorDesign: 'Forma Buro '
+asSeenIn: 'Dwell'
+interiorDesign: 'Alena Krasatulina'
 photography: 'Damir Otegen'
 styling: 'Aigerim Akhmetova'
 images:

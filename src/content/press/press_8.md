@@ -1,4 +1,5 @@
 ---
+id: 9
 title: "Architectural Digest"
 type: "press"
 heroImage: "8.png"

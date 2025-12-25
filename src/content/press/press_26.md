@@ -1,4 +1,5 @@
 ---
+id: 36
 title: "INEX"
 type: "press"
 heroImage: "26.png"

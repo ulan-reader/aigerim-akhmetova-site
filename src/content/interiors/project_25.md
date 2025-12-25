@@ -2,8 +2,8 @@
 title: 'Apartment for single man'
 slug: 'project-25'
 position: 25
-mainPhoto: './project_cover_26.jpg'
-interiorDesign: 'Fariz Mamedov'
+mainPhoto: './project_cover_25.jpg'
+interiorDesign: 'Ksenia Kim'
 photography: 'Damir Otegen'
 styling: 'Aigerim Akhmetova'
 images:

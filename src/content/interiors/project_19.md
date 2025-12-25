@@ -3,7 +3,8 @@ title: 'American Style in Kazakhstan'
 slug: 'project-19'
 position: 19
 mainPhoto: './project_cover_19.jpg'
-interiorDesign: 'Fariz Mamedov'
+asSeenIn: 'Yinji'
+interiorDesign: 'Yeren Interiors'
 photography: 'Damir Otegen'
 styling: 'Aigerim Akhmetova'
 images:

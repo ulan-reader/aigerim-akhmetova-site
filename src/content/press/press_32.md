@@ -1,4 +1,5 @@
 ---
+id: 37
 title: "Work Design Magazine"
 type: "press"
 heroImage: "32.png"

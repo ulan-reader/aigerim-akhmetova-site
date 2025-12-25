@@ -1,4 +1,5 @@
 ---
+id: 12
 title: "Elle Decor"
 type: "press"
 heroImage: "10.png"

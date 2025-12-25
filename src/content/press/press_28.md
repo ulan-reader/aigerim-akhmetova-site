@@ -1,5 +1,6 @@
 ---
-title: "Mydecor \nЖания Ерен"
+id: 27
+title: "Mydecor"
 type: "press"
 heroImage: "28.png"
 link: "https://mydecor.ru/interior/houses/sovremennyi-taunkhaus-s-terrasoi-v-alma-ate/"

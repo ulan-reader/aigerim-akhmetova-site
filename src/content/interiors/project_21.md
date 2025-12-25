@@ -4,7 +4,8 @@ Kazakhstan, Almaty.'
 slug: 'project-21'
 position: 21
 mainPhoto: './project_cover_21.jpg'
-interiorDesign: 'Danara Akhmetova'
+asSeenIn: 'Dwell'
+interiorDesign: 'Aziza Aliyar'
 photography: 'Damir Otegen'
 styling: 'Aigerim Akhmetova'
 images:

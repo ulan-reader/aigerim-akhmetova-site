@@ -1,9 +1,10 @@
 ---
 title: 'Dark '
-slug: 'project-16'
-position: 16
+slug: 'project-28'
+position: 28
 mainPhoto: './project_cover_16.jpg'
-interiorDesign: 'Fariz Mamedov'
+asSeenIn: 'I+D'
+interiorDesign: 'Kvadrat Architects'
 photography: 'Damir Otegen'
 styling: 'Aigerim Akhmetova'
 images:

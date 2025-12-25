@@ -1,11 +1,12 @@
 ---
 title: 'Penthouse in the Mountains '
-slug: 'project-17'
-position: 17
+slug: 'project-29'
+position: 29
 mainPhoto: './project_cover_17.jpg'
-interiorDesign: 'Assel Baimakhan'
+asSeenIn: 'Yinji' 
+interiorDesign: 'Latif Bureau'
 photography: 'Stephan Julliard'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_17/Latif_FR_2.jpg'
   - '/assets/projects_17/Latif_FR_22.jpg'

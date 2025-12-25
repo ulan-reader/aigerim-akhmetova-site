@@ -4,10 +4,532 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
+  const posts = await getCollection('interiors');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }));
+}
+
+export const prerender = true;
+
+const post = Astro.props;
+if (!post.data) {
+  throw new Error(`Post data is undefined for slug: ${Astro.params.slug}`);
+}
+const { Content } = await render(post);
+const { title, mainPhoto, images, interiorDesign, photography, styling, produced, asSeenIn } = post.data;
+
+// Combine all images
+const allImages = [
+  mainPhoto,
+  ...(images || [])
+].filter((img): img is string | { src: string; width: number; height: number; format: "svg" | "png" | "jpg" | "jpeg" | "tiff" | "webp" | "gif" | "avif" } => img !== undefined && img !== null);
+const currentIndex = 0; // For client-side navigation
+---	
+
+<BaseLayout title={`Interiors - ${title}`}>
+  <main>
+    <div class="container">
+      <!-- Main content with carousel and description side by side -->
+      <div class="content-wrapper">
+        <!-- Carousel Section -->
+        <div class="carousel-section">
+          <div class="carousel-container">
+            <!-- Previous button -->
+            <button class="carousel-btn prev-btn" aria-label="Previous image">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+
+            <!-- Carousel images -->
+            <div class="carousel">
+              <div class="carousel-track">
+                {allImages.map((img, index) => (
+					<div class={`carousel-slide ${index === 0 ? 'active' : ''}`} data-index={index}>
+						{typeof img === 'string' ? (
+							<img
+								src={img}
+								alt={`${title} - Image ${index + 1}`}
+								loading={index === 0 ? 'eager' : 'lazy'}
+								width={800}
+								height={600}
+							/>
+						) : (
+							<Image
+								src={img}
+								alt={`${title} - Image ${index + 1}`}
+								loading={index === 0 ? 'eager' : 'lazy'}
+								width={800}
+								height={600}
+							/>
+						)}
+					</div>
+				))}
+              </div>
+            </div>
+
+            <!-- Next button -->
+            <button class="carousel-btn next-btn" aria-label="Next image">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Thumbnails -->
+          {allImages.length > 1 && (
+            <div class="thumbnails">
+              {allImages.map((img, index) => (
+                <button class="thumbnail-btn" data-index={index} aria-label={`View image ${index + 1}`}>
+					<img 
+						src={typeof img === 'string' ? img : img?.src}
+						alt=""
+						loading="lazy"
+						width={80}
+						height={60}
+					/>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <!-- Description Section -->
+        <div class="description-section">
+          <div class="description-content">
+            <h1 class="project-title">{title}</h1>
+            
+            <div class="project-details">
+              {asSeenIn && (
+                <div class="detail-item">
+                  <span class="detail-label">Published in:</span>
+                  <span class="detail-value">{asSeenIn}</span>
+                </div>
+              )}
+              
+              {interiorDesign && (
+                <div class="detail-item">
+                  <span class="detail-label">Interior Design:</span>
+                  <span class="detail-value">{interiorDesign}</span>
+                </div>
+              )}
+              
+              {photography && (
+                <div class="detail-item">
+                  <span class="detail-label">Photography:</span>
+                  <span class="detail-value">{photography}</span>
+                </div>
+              )}
+              
+              {styling && (
+                <div class="detail-item">
+                  <span class="detail-label">Styling:</span>
+                  <span class="detail-value">{styling}</span>
+                </div>
+              )}
+              
+              {produced && (
+                <div class="detail-item">
+                  <span class="detail-label">Produced by:</span>
+                  <span class="detail-value">{produced}</span>
+                </div>
+              )}
+            </div>
+
+            <!-- Image counter -->
+            <div class="image-counter">
+              <span class="current-image">1</span>
+              <span class="separator">/</span>
+              <span class="total-images">{allImages.length}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.carousel-slide');
+      const thumbnails = document.querySelectorAll('.thumbnail-btn');
+      const prevBtn = document.querySelector('.prev-btn');
+      const nextBtn = document.querySelector('.next-btn');
+      const currentImageSpan = document.querySelector('.current-image');
+      const totalImagesSpan = document.querySelector('.total-images');
+      
+      let currentIndex = 0;
+      const totalSlides = slides.length;
+      
+      // Initialize total images counter
+      if (totalImagesSpan) {
+        totalImagesSpan.textContent = String(totalSlides);
+      }
+      
+      // Function to update carousel
+		const track = document.querySelector('.carousel-track');
+
+		function updateCarousel() {
+			if (!track) return;
+
+			(track as HTMLElement).style.transform = `translateX(-${currentIndex * 100}%)`;
+
+			thumbnails.forEach((thumb, index) => {
+				thumb.classList.toggle('active', index === currentIndex);
+			});
+
+			if (currentImageSpan) {
+				currentImageSpan.textContent = String(currentIndex + 1);
+			}
+		}
+
+      
+      // Previous button click
+      prevBtn?.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+      });
+      
+      // Next button click
+      nextBtn?.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateCarousel();
+      });
+      
+      // Thumbnail clicks
+      thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', () => {
+          const index = (thumbnail as HTMLElement).dataset.index;
+          if (index !== undefined) {
+            currentIndex = parseInt(index);
+            updateCarousel();
+          }
+        });
+      });
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+          updateCarousel();
+        } else if (e.key === 'ArrowRight') {
+          currentIndex = (currentIndex + 1) % totalSlides;
+          updateCarousel();
+        }
+      });
+      
+      // Initialize carousel
+      updateCarousel();
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  :root {
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 3rem;
+    --border-radius: 8px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  main {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm);
+  }
+
+  .container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: var(--spacing-lg);
+    align-items: start;
+  }
+
+  /* Carousel Styles */
+  .carousel-section {
+    position: relative;
+  }
+
+  .carousel-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .carousel {
+    flex: 1;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.3s ease;
+  }
+
+  .carousel-slide {
+    min-width: 100%;
+    transition: opacity 0.3s ease;
+  }
+
+  /* .carousel-slide:not(.active) {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+  } */
+
+  .carousel-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--border-radius);
+  }
+
+  .carousel-btn {
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
+  }
+
+  .carousel-btn:hover {
+    background: #f8f8f8;
+    transform: scale(1.05);
+  }
+
+  .carousel-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Thumbnails */
+  .thumbnails {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .thumbnail-btn {
+    width: 60px;
+    height: 60px;
+    padding: 2px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: none;
+  }
+
+  .thumbnail-btn:hover {
+    border-color: #ddd;
+  }
+
+  .thumbnail-btn.active {
+    border-color: #000;
+  }
+
+  .thumbnail-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+  }
+
+  /* Description Section */
+  .description-section {
+    position: sticky;
+    top: var(--spacing-md);
+    height: fit-content;
+    padding: var(--spacing-md);
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+  }
+
+  .project-title {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.2;
+  }
+
+  .project-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid #eee;
+  }
+
+  .detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .detail-label {
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .detail-value {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  .project-description {
+    font-family: "Asap", sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
+  }
+
+  .project-description p {
+    margin-bottom: 1rem;
+  }
+
+  .image-counter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid #eee;
+    font-family: monospace;
+    font-size: 1rem;
+    color: #666;
+  }
+
+  .separator {
+    opacity: 0.5;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .content-wrapper {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+    }
+    
+    .description-section {
+      position: static;
+      order: -1;
+    }
+    
+    .carousel-container {
+      max-width: 800px;
+      margin: 0 auto var(--spacing-md);
+    }
+  }
+
+  @media (max-width: 768px) {
+    main {
+      padding: var(--spacing-xs);
+    }
+    
+    .content-wrapper {
+      gap: var(--spacing-sm);
+    }
+    
+    .carousel-container {
+      gap: 0.5rem;
+    }
+    
+    .carousel-btn {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .carousel-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .project-title {
+      font-size: 1.5rem;
+    }
+    
+    .thumbnails {
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      justify-content: flex-start;
+    }
+    
+    .thumbnails::-webkit-scrollbar {
+      height: 4px;
+    }
+    
+    .thumbnails::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 2px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .carousel-container {
+      flex-direction: column;
+    }
+    
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+    
+    .prev-btn {
+      left: 1rem;
+    }
+    
+    .next-btn {
+      right: 1rem;
+    }
+    
+    .thumbnail-btn {
+      width: 50px;
+      height: 50px;
+    }
+  }
+</style>
+
+
+
+
+<!-- ---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+
+export async function getStaticPaths() {
 	const posts = await getCollection('interiors');
 	return posts.map((post) => ({
 		params: { slug: post.id },
-		// params: { slug: [post.id] },
 		props: post,
 	}));
 }
@@ -19,7 +541,7 @@ if (!post.data) {
   throw new Error(`Post data is undefined for slug: ${Astro.params.slug} and ${post.rendered}`);
 }
 const { Content } = await render(post);
-const { title, mainPhoto, images, interiorDesign, photography, styling, produced } = post.data;
+const { title, mainPhoto, images, interiorDesign, photography, styling, produced, asSeenIn } = post.data;
 ---
 <BaseLayout title="Interiors">
 	<main>
@@ -27,13 +549,7 @@ const { title, mainPhoto, images, interiorDesign, photography, styling, produced
 
 		<div class="prose">
 			
-			
-			<!-- {mainPhoto &&
-				<div class="hero-image">
-					<Image src={mainPhoto} width={1020} height={510} alt="" />
-				</div>
-			} -->
-			
+				
 			<section class="gallery">
 				{images && images.length > 0 && mainPhoto && (() => {
 					const allImages = [mainPhoto, ...images];
@@ -47,8 +563,8 @@ const { title, mainPhoto, images, interiorDesign, photography, styling, produced
 				})()}
 			</section>
 			<div class="title">
-				<!-- <h2>{title}</h2> -->
 				<div style="font-size: 0.9em; color: gray; gap: 10px">
+					{asSeenIn && <p>As seen in {asSeenIn}</p>}
 					{interiorDesign && <p>Interior Design by {interiorDesign}</p>}
 					{photography && <p>Photography by {photography}</p>}
 					{styling && <p>Styling by {styling}</p>}
@@ -194,4 +710,4 @@ const { title, mainPhoto, images, interiorDesign, photography, styling, produced
 			padding: 0.5em 0.3em;
 		}
 	}
-</style>
+</style> -->

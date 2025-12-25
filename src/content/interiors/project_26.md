@@ -3,9 +3,9 @@ title: 'Villa Dzhailay 16500 sq ft'
 slug: 'project-26'
 position: 26
 mainPhoto: './project_cover_26.jpg'
-interiorDesign: 'Alena Krasatulina'
+interiorDesign: 'Vertical Design'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_26/Vertical_FPV_15.jpg'
   - '/assets/projects_26/Vertical_FPV_20.jpg'

@@ -1,4 +1,5 @@
 ---
+id: 11
 title: "New York Times"
 type: "press"
 heroImage: "1.png"

@@ -1,4 +1,5 @@
 ---
+id: 24
 title: "DWELL"
 type: "press"
 heroImage: "12.png"

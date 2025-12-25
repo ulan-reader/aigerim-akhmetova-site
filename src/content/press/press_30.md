@@ -1,5 +1,6 @@
 ---
-title: "Mydecor \nЖания Ерен"
+id: 29
+title: "Mydecor"
 type: "press"
 heroImage: "30.png"
 link: "https://mydecor.ru/interior/flats/sovremennaya-kvartira-166-m-v-alma-ate/"

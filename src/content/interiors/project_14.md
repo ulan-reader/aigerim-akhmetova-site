@@ -3,9 +3,10 @@ title: 'Apartment “Rooftop”'
 slug: 'project-14'
 position: 14
 mainPhoto: './project_cover_14.jpg'
-interiorDesign: 'Kvadrat Architects'
+asSeenIn: 'MadWhite'
+interiorDesign: 'Zaure Buzdayeva'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_14/ZB_Esentai_City_12.jpg'
   - '/assets/projects_14/ZB_Esentai_City_18.jpg'

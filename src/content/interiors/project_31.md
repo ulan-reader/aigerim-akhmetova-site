@@ -3,9 +3,10 @@ title: 'Dark & Stylish 95m² (1,022 sq ft) Apartment for a Young Couple'
 slug: 'project-31'
 position: 31
 mainPhoto: './project_cover_31.jpg'
-interiorDesign: 'Kvadrat Architects'
+interiorDesign: 'Gulnara Alimbayeva'
+asSeenIn: 'Dwell'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_31/EliteLife_10.jpg'
   - '/assets/projects_31/EliteLife_2.jpg'

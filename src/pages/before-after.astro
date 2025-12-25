@@ -1,5 +1,427 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const before_after = await getCollection('before_after');
+---
+
+<BaseLayout title="Before and After">
+  <div class="hero-section">
+    <div class="container">
+      <div class="title-wrapper">
+        <h1 class="main-title">
+          <span class="title-word">BEFORE</span>
+          <span class="ampersand">&</span>
+          <span class="title-word">AFTER</span>
+        </h1>
+        <p class="subtitle">
+          Sometimes words fall short in describing a stylist's artistry.<br />
+          This visual journey speaks volumes.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="gallery-container">
+    <div class="gallery-grid">
+      {before_after.map((item) => (
+        <article class="transformation-card">
+          <div class="comparison-wrapper">
+            <div class="image-comparison">
+              <figure class="image-frame before-frame">
+                <div class="image-container">
+                  {/* <img 
+                    src={item.data.before} 
+                    alt="Before transformation" 
+                    loading="lazy"
+                    class="transform-image"
+                  /> */}
+                  <Image 
+                    src={item.data.before} 
+                    alt="Before transformation" 
+                    loading="lazy"
+                    width={1200}
+                    height={800}
+                    class="transform-image"
+                  />
+                  <div class="image-overlay"></div>
+                </div>
+                <figcaption class="caption before-caption">
+                  <span class="caption-text">Before</span>
+                </figcaption>
+              </figure>
+
+              <div class="comparison-divider">
+                <div class="divider-line"></div>
+                <div class="divider-icon">→</div>
+              </div>
+
+              <figure class="image-frame after-frame">
+                <div class="image-container">
+                  <Image 
+                    src={item.data.after} 
+                    alt="After transformation" 
+                    loading="lazy"
+                    width={1200}
+                    height={800}
+                    class="transform-image"
+                  />
+                  <div class="image-overlay"></div>
+                </div>
+                <figcaption class="caption after-caption">
+                  <span class="caption-text">After</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Hero Section */
+  .hero-section {
+    padding: 12vmin 5vw 8vmin;
+    background: linear-gradient(135deg, #f9f7f7 0%, #ffffff 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.8) 100%);
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .title-wrapper {
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .main-title {
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .title-word {
+    display: inline-block;
+    position: relative;
+    padding: 0 1rem;
+  }
+
+  .title-word::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #333, transparent);
+    opacity: 0.3;
+  }
+
+  .ampersand {
+    font-size: 0.6em;
+    font-weight: 300;
+    color: #888;
+    font-style: italic;
+  }
+
+  .subtitle {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: #666;
+    line-height: 1.6;
+    font-weight: 300;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+  }
+
+  /* Gallery */
+  .gallery-container {
+    padding: 6vmin 5%;
+    background: #fefefe;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmin(650px, 1fr));
+    gap: 5rem;
+    max-width: 1800px;
+    margin: 0 auto;
+  }
+
+  .transformation-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 
+      0 10px 30px rgba(0,0,0,0.08),
+      0 1px 3px rgba(0,0,0,0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .transformation-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    padding: 1px;
+    background: linear-gradient(45deg, #f0f0f0, #ffffff, #f0f0f0);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .transformation-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 
+      0 25px 50px rgba(0,0,0,0.12),
+      0 5px 15px rgba(0,0,0,0.08);
+  }
+
+  .transformation-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Image Comparison */
+  .comparison-wrapper {
+    padding: 2.5rem;
+  }
+
+  .image-comparison {
+    /* height: 400px; */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    position: relative;
+  }
+
+  .image-frame {
+    margin: 0;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 5/4;
+    background: #f8f8f8;
+  }
+
+  .image-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .transform-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .image-frame:hover .transform-image {
+    transform: scale(1.05);
+  }
+
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 60%,
+      rgba(0,0,0,0.1) 80%,
+      rgba(0,0,0,0.2) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .image-frame:hover .image-overlay {
+    opacity: 1;
+  }
+
+  /* Captions */
+  .caption {
+    position: absolute;
+    bottom: 1.5rem;
+    width: 100%;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .caption-text {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.95);
+    color: #222;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+  }
+
+  .before-caption .caption-text {
+    background: rgba(240, 240, 240, 0.95);
+    color: #555;
+  }
+
+  .after-caption .caption-text {
+    background: rgba(255, 255, 255, 0.98);
+    color: #000;
+    font-weight: 700;
+  }
+
+  .image-frame:hover .caption-text {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+  }
+
+  /* Divider */
+  .comparison-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .divider-line {
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, 
+      transparent 0%, 
+      #ddd 20%, 
+      #ddd 80%, 
+      transparent 100%
+    );
+    margin: 1rem 0;
+  }
+
+  .divider-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #666;
+    box-shadow: 
+      0 4px 15px rgba(0,0,0,0.1),
+      inset 0 1px 3px rgba(255,255,255,0.8);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+
+  .transformation-card:hover .divider-icon {
+    transform: scale(1.1);
+    color: #000;
+    box-shadow: 
+      0 6px 20px rgba(0,0,0,0.15),
+      inset 0 1px 3px rgba(255,255,255,0.9);
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: 8vmin 5vw;
+    }
+
+    .main-title {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .gallery-grid {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+      padding: 0 1rem;
+    }
+
+    .comparison-wrapper {
+      padding: 1.5rem;
+    }
+
+    .image-comparison {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .image-frame {
+      aspect-ratio: 5/4;
+    }
+
+    .comparison-divider {
+      display: none;
+    }
+
+    .caption-text {
+      padding: 0.6rem 1.5rem;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+    }
+
+    .transformation-card:hover {
+      transform: translateY(-8px);
+    }
+  }
+
+  /* Tablet Responsive */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+      max-width: 800px;
+    }
+  }
+</style>
+
+
+
+
+
+
+
+
+
+<!-- ---
+import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 const before_after = (await getCollection('before_after'));
@@ -35,51 +457,23 @@ const photos = [
   <div class="ba-gallery">
     {before_after.map((item) => (
       <div class="ba-card">
-        <div class="ba-container">
-          <img src={item.data.after} class="after" />
-          <img src={item.data.before} class="before" />
-          <div class="ba-handle" draggable="false"></div>
+        <div class="ba-pair">
+          <figure class="ba-image">
+            <img src={item.data.before} alt="Before" />
+            <figcaption>Before</figcaption>
+          </figure>
+
+          <figure class="ba-image">
+            <img src={item.data.after} alt="After" />
+            <figcaption>After</figcaption>
+          </figure>
         </div>
       </div>
     ))}
   </div>
 
+
   <script>
-    // window.addEventListener('load', () => {
-    //   document.querySelectorAll<HTMLElement>('.ba-container').forEach((container) => {
-    //     const before = container.querySelector<HTMLImageElement>('.before');
-    //     const handle = container.querySelector<HTMLDivElement>('.ba-handle');
-
-    //      // проверка на null
-
-    //     function setPosition(x: number) {
-    //       const rect = container.getBoundingClientRect();
-    //       let offset = x - rect.left;
-    //       if (offset < 0) offset = 0;
-    //       if (offset > rect.width) offset = rect.width;
-    //       const percent = (offset / rect.width) * 100;
-    //       if (!before || !handle) return;
-    //       before.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-    //       handle.style.left = `${offset}px`;
-    //     }
-
-    //     let dragging = false;
-    //     if (!handle) return;
-    //     handle.addEventListener('mousedown', () => (dragging = true));
-    //     window.addEventListener('mouseup', () => (dragging = false));
-
-    //     window.addEventListener('mousemove', (e: MouseEvent) => {
-    //       if (dragging) setPosition(e.clientX);
-    //     });
-
-    //     container.addEventListener('click', (e: MouseEvent) => setPosition(e.clientX));
-
-    //     // центрируем линию при загрузке
-    //     // setTimeout(() => {
-    //     //   setPosition(container.offsetWidth / 2);
-    //     // }, 100);
-    //   });
-    // });
     window.addEventListener('load', () => {
     document.querySelectorAll('.ba-container').forEach((container) => {
         const before = container.querySelector<HTMLImageElement>('.before');
@@ -130,6 +524,54 @@ const photos = [
 </BaseLayout>
 
 <style>
+
+  .ba-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  aspect-ratio: 16 / 10;
+}
+
+.ba-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000;
+}
+
+.ba-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.ba-image figcaption {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border-radius: 999px;
+}
+
+
+
+@media (max-width: 768px) {
+  .ba-pair {
+    grid-template-columns: 1fr;
+    aspect-ratio: auto;
+  }
+
+  .ba-image {
+    aspect-ratio: 16 / 10;
+  }
+}
+
   .ba-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
@@ -256,7 +698,7 @@ const photos = [
     font-size: calc((1.2 - 1) * 1.2vw + 1rem);
     color: #333;
   }
-</style>
+</style> -->
 
 <!-- ---
 import BaseLayout from "../layouts/BaseLayout.astro";

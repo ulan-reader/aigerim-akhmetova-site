@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-const presses = (await getCollection("press"));
+const presses = (await getCollection("press")).sort((a, b) => a.data.id - b.data.id);
 import { Image } from 'astro:assets';
 
 ---

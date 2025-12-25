@@ -1,4 +1,5 @@
 ---
+id: 24
 title: "I+D"
 type: "press"
 heroImage: "17.png"

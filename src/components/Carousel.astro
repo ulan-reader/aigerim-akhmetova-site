@@ -1,30 +1,262 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from 'astro:assets';
+
+import firstImage from "../assets/clients/FM_PresidentPark_6_optimized.webp";
+import secondImage from "../assets/clients/FM_PresidentPark_46_optimized.webp";
+import thirdImage from "../assets/clients/OM_ZH_34_optimized.webp";
+import fourthImage from "../assets/clients/Vertical_FPV_20_optimized.webp";
+
+const slides = [
+  { image: firstImage, title: "From Space to Story.", text: "Every interior whispers — I just help it speak in full voice.", button: 'VIEW PORTFOLIO', link: '/before-after' },
+  { image: secondImage, title: "Let’s turn vision into visual poetry.", text: "From the designer’s idea to the magazine cover — every frame, every detail matters.", button: 'EXPLORE PROJECTS', link: '/interiors' },
+  { image: thirdImage, title: "Director of Aesthetic Truth.", text: "I curate spaces like stories — layered, intentional, unforgettable.", button: 'DISCOVER MORE', link: '/about' },
+  { image: fourthImage, title: "Believe in the magic of transformation.", text: "Because every perfectly placed detail can change how the world sees a space.", button: 'CONTACT ME', link: '/contact' }
+];
+---
+
+<BaseLayout title="AIGERIM AKHMETOVA">
+  <div class="page">
+    <div class="hero-carousel">
+      {slides.map((slide, i) => (
+        <div class="slide" data-index={i}>
+          <Image
+            src={slide.image}
+            alt={slide.title}
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding="async"
+            width={1920}
+            height={1080}
+            format="webp"
+            quality={80}
+            class="background-image"
+          />
+          <div class="content">
+            <h1>{slide.title}</h1>
+            <p>{slide.text}</p>
+            <a href={slide.link}>{slide.button}</a>
+          </div>
+        </div>
+      ))}
+      <button class="nav prev" id="prevBtn">‹</button>
+      <button class="nav next" id="nextBtn">›</button>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+.hero-carousel {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  margin: 0;
+  padding: 0;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* Обрезает, но полностью закрывает область */
+  object-position: center;
+  position: absolute;     /* Добавлено: чтобы перекрывать весь слайд */
+  top: 0;
+  left: 0;
+  /* Эффект лёгкого зума при появлении */
+  transform: scale(1.06);
+  transition: transform 1.4s ease;
+}
+
+.slide.active .background-image {
+  transform: scale(1);
+}
+
+/* Контент поверх изображения */
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 3;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+  width: 90%;
+  max-width: 1200px;
+}
+
+/* Остальные твои стили без изменений */
+.content h1 { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; }
+.content p { font-size: 1.2rem; font-weight: 400; }
+
+.content a {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 14px 36px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.8);
+  border-radius: 50px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(6px);
+  text-decoration: none;
+  transition: 
+    color 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.4s ease;
+  animation: fadeUp 1s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.slide.active .content a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.content a:hover {
+  background: rgba(255,255,255,0.9);
+  color: #000;
+  border-color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(255,255,255,0.25);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+.nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.4);
+    color: white;
+    border: none;
+    font-size: 36px;
+    cursor: pointer;
+    padding: 6px 12px;
+    z-index: 5;
+    transition: background 0.3s;
+    border-radius: 4px;
+}
+
+.nav:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+.footer {
+  background: #111;
+  color: #aaa;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .content h1 { font-size: 2rem; }
+  .content p { font-size: 1rem; }
+}
+</style>
+
+<script>
+/* Твой скрипт почти без изменений, только убери часть с lazy-bg и dataset.bg */
+document.addEventListener("DOMContentLoaded", () => {
+  const slides = document.querySelectorAll('.slide');
+  const next = document.getElementById('nextBtn');
+  const prev = document.getElementById('prevBtn');
+  let current = 0;
+  let timer: any;
+
+  const showSlide = (index: any) => {
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+  };
+
+  const nextSlide = () => {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+    resetAuto();
+  };
+
+  const prevSlide = () => {
+    current = (current - 1 + slides.length) % slides.length;
+    showSlide(current);
+    resetAuto();
+  };
+
+  const startAuto = () => timer = setInterval(nextSlide, 5000);
+  const resetAuto = () => { clearInterval(timer); startAuto(); };
+
+  if (next && prev && slides.length) {
+    next.onclick = nextSlide;
+    prev.onclick = prevSlide;
+    showSlide(0);
+    startAuto();
+  }
+});
+</script>
+
+
+<!-- ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from 'astro:assets';
+
+import firstImage from "/assets/clients/FM_PresidentPark_6_optimized.webp";
+import secondImage from "/assets/clients/FM_PresidentPark_46_optimized.webp";
+import thirdImage from "/assets/clients/OM_ZH_34_optimized.webp";
+import fourthImage from "/assets/clients/Vertical_FPV_20_optimized.webp";
 
 const slides = [
   {
-    image: "/assets/clients/FM_PresidentPark_6_optimized.jpg",
+    image: firstImage,
     title: "From Space to Story.",
     text: "Every interior whispers — I just help it speak in full voice.",
     button: 'VIEW PORTFOLIO',
     link: '/before-after'
   },
   {
-    image: "/assets/clients/FM_PresidentPark_46_optimized.jpg",
+    image: secondImage,
     title: "Let’s turn vision into visual poetry.",
     text: "From the designer’s idea to the magazine cover — every frame, every detail matters.",
     button: 'EXPLORE PROJECTS',
     link: '/interiors'
   },
   {
-    image: "/assets/clients/OM_ZH_34_optimized.jpg",
+    image: thirdImage,
     title: "Director of Aesthetic Truth.",
     text: "I curate spaces like stories — layered, intentional, unforgettable.",
     button: 'DISCOVER MORE',
     link: '/about'
   },
   {
-    image: "/assets/clients/Vertical_FPV_20_optimized.jpg",
+    image: fourthImage,
     title: "Believe in the magic of transformation.",
     text: "Because every perfectly placed detail can change how the world sees a space.",
     button: 'CONTACT ME',
@@ -34,9 +266,10 @@ const slides = [
 ---
 
 <BaseLayout title="AIGERIM AKHMETOVA">
-    <div class="hero-carousel">
+    <div class="page">
+      <div class="hero-carousel">
         {slides.map((slide, i) => (
-            <div class="slide lazy-bg" data-bg={slide.image} data-index={i}>
+            <div class="slide lazy-bg" style={`background-image: url(${slide.image})`} data-index={i}>
             <div class="content">
                 <h1>{slide.title}</h1>
                 <p>{slide.text}</p>
@@ -49,13 +282,15 @@ const slides = [
 
         <button class="nav prev" id="prevBtn">&#10094;</button>
         <button class="nav next" id="nextBtn">&#10095;</button>
+      </div>
     </div>
 </BaseLAyout>
 
 <style>
 .hero-carousel {
   position: relative;
-  height: 85vh;
+  height: 100vh;
+  box-sizing: border-box;
   overflow: hidden;
   background: #000;
 }
@@ -222,4 +457,4 @@ document.addEventListener("DOMContentLoaded", () => {
     startAuto();
   }
 });
-</script>
+</script> -->

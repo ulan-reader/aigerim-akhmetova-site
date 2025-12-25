@@ -3,9 +3,10 @@ title: 'Dostyk Residence ap 1. S – 144.3 sq.m Kazakhstan, Almaty'
 slug: 'project-23'
 position: 23
 mainPhoto: './project_cover_23.jpg'
-interiorDesign: 'Oxana Mazurin'
+asSeenIn: 'Amazing Architecture'
+interiorDesign: 'Casa Luxe'
 photography: 'Damir Otegen'
-produced: 'Aigerim Akhmetova'
+styling: 'Aigerim Akhmetova'
 images:
   - '/assets/projects_23/DM_TD_11.jpg'
   - '/assets/projects_23/DM_TD_2.jpg'

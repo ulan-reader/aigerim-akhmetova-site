@@ -1,4 +1,5 @@
 ---
+id: 32
 title: "And more"
 type: "press"
 heroImage: "35.png"
