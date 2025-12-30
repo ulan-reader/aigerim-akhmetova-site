@@ -1,0 +1,360 @@
+---
+import { t, locales, withLocale } from "../../utils/i18n";
+const { currentLocale } = Astro;
+const locale = (currentLocale || "en") as "ru" | "en";
+
+export function getStaticPaths() {
+  return locales.map(lang => ({
+    params: { lang }
+  }));
+}
+
+const lang = Astro.params.lang;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Footer from "../../components/Footer.astro";
+
+---
+<BaseLayout title={t(locale, "contact.title")}>
+
+    <div class="cont">
+        <div class="contact-container">
+            <div class="content-section">
+                <div class="content-text">
+                    <h3>{t(locale, "contact.header.line1")}</h3>
+                    <h3>
+                        {t(locale, "contact.header.line2")} <a href={withLocale(locale, `/contact`)}>{t(locale, "contact.header.line3")}</a>.
+                    </h3>
+                </div>
+                <div>
+                    <div class="hr-block">
+                        <hr>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 20px">
+                        <div class="field">
+                            <label style="font-size: 20px" for="emailMy">{t(locale, "contact.form.email")}</label>
+                            <div id="emailMy">aigerim.mamyraliyeva@gmail.com</div>
+                        </div>
+                        <div class="field">
+                            <label style="font-size: 20px" for="phoneMy">{t(locale, "contact.form.phone")}</label>
+                            <div id="phoneMy">+1 (346) 582-0739</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="contactForm">
+                <fieldset>
+                    <legend>{t(locale, "contact.form.name")} <span class="required">{t(locale, "contact.form.required")}</span></legend>
+                    <div class="inline">
+                        <div class="field">
+                            <label for="fname">{t(locale, "contact.form.first_name")}</label>
+                            <input type="text" id="fname" name="fname" required>
+                        </div>
+                        <div class="field">
+                            <label for="lname">{t(locale, "contact.form.last_name")}</label>
+                            <input type="text" id="lname" name="lname" required>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>{t(locale, "contact.form.email")} <span class="required">{t(locale, "contact.form.required")}</span></legend>
+                    <input type="email" id="email" name="email" required>
+                </fieldset>
+
+                <fieldset>
+                    <legend>{t(locale, "contact.form.message")} <span class="required">{t(locale, "contact.form.required")}</span></legend>
+                    <textarea id="message" name="message" required></textarea>
+                </fieldset>
+
+                <hr>
+
+                <fieldset>
+                        <legend>{t(locale, "contact.services.legend")}</legend>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" name="service" value="Interior Styling" />
+                            {t(locale, "contact.services.interiorStyling")}
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="service" value="Consulting" />
+                            {t(locale, "contact.services.consulting")}
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="service" value="Set Styling for Interior Shoots" />
+                            {t(locale, "contact.services.setStyling")}
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="service" value="Seasonal and Holiday Decoration" />
+                            {t(locale, "contact.services.seasonalDecoration")}
+                        </label>
+
+                        <label>
+                            <input type="checkbox" name="service" value="PR Support for Publications" />
+                            {t(locale, "contact.services.prSupport")}
+                        </label>
+                    </div>
+                </fieldset>
+
+                <button type="submit">{t(locale, "contact.form.submit")}</button>
+            </form>
+        </div>
+    </div>
+<!-- <script>
+    const form = document.getElementById("contactForm");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+
+        const services = formData
+        .getAll("service");
+
+        const payload = {
+            fname: formData.get("fname"),
+            lname: formData.get("lname"),
+            email: formData.get("email"),
+            message: formData.get("message"),
+            services
+        };
+
+        const res = await fetch("https://contact-form-worker.your-name.workers.dev", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+            alert("Message sent successfully ✨");
+            form.reset();
+        } else {
+            alert("Something went wrong");
+        }
+    });
+</script> -->
+
+</BaseLayout>
+<!-- <Footer /> -->
+
+<style>
+    .cont {
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        padding: 5%;
+    }
+
+    .contact-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+        /* border-bottom: 2px solid #000; */
+    }
+
+    .content-text {
+        display: flex;
+        flex-direction: column;
+        gap:32px
+    }
+
+    .content-text h3 {
+        font-family: "orpheus-pro";
+        font-weight: 400;
+        margin: 0;
+        font-size: calc(1.2 * 1.2vw + 1rem);
+    }
+
+    .content-text h3 a {
+        color: #253551;
+    }
+
+    /* body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background: #e8e6e1;
+        display: flex;
+        justify-content: center;
+        padding: 40px;
+    } */
+
+    form {
+        margin-top: 40px;
+        /* width: 520px; */
+        font-size: 14px;
+        color: #222;
+    }
+
+    fieldset {
+        border: none;
+        margin: 0 0 24px;
+        padding: 0;
+    }
+
+    legend {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #444;
+    }
+
+    label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: #555;
+        margin-bottom: 4px;
+    }
+
+    .required {
+        font-size: 11px;
+        font-weight: normal;
+        color: #777;
+        margin-left: 4px;
+    }
+
+    .inline {
+        display: flex;
+        gap: 14px;
+    }
+
+    .inline .field {
+        flex: 1;
+    }
+
+    /* ===== INPUTS & TEXTAREAS ===== */
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 14px 16px;
+        border: none;
+        border: 1px solid #b3b3b3;
+        background: #fff;
+        font-size: 14px;
+        transition: border-color 0.25s ease;
+    }
+
+    textarea {
+        height: 150px;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        outline: none;
+        border-color: #000;
+    }
+
+    /* === underline animation === */
+    input,
+    textarea,
+    select {
+        position: relative;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-bottom-color: transparent;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+        box-sizing: border-box;
+    }
+
+    input[type="text"]:focus::after,
+    input[type="email"]:focus::after,
+    textarea:focus::after,
+    select:focus::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        height: 2px;
+        width: 100%;
+        background: #000;
+        animation: underline 0.3s ease forwards;
+    }
+
+    @keyframes underline {
+        from { width: 0; }
+        to { width: 100%; }
+    }
+
+    textarea {
+        resize: vertical;
+        /* min-height: 120px; */
+    }
+
+    /* === CHECKBOXES === */
+    .checkbox-group {
+        margin-top: 8px;
+    }
+
+    .checkbox-group label {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        color: #333;
+    }
+
+    .checkbox-group input {
+        margin-right: 8px;
+    }
+
+    hr {
+        border: none;
+        border-bottom: 1px solid #222;
+        margin: 22px 0;
+    }
+
+    /* === BUTTON === */
+    button {
+        padding: 10px 26px;
+        border: none;
+        background: #2a3d4d;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    button:hover {
+        background: #1e2b39;
+    }
+
+    .hr-block {
+        /* grid-column: 2; */
+        width: 100%;
+        padding: 2rem 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .hr-block hr {
+        width: 100%;
+        border: none;
+        border-top: 1px solid #000; /* цвет линии */
+    }
+
+    @media (max-width: 768px) {
+        .contact-container {
+            grid-template-columns: 1fr;
+        }
+
+        .content-text h3 {
+            font-size: calc(1.2 * 1.2vw + 0.8rem);
+        }
+    }
+</style>

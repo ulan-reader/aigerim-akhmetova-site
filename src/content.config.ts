@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const interiors = defineCollection({
-	loader: glob({ base: './src/content/interiors', pattern: '**/*.{md,mdx}' }),
+  	loader: glob({ base: './src/content', pattern: '**/interiors/*.{md,mdx}' }),
 	schema: ({ image }) =>
 		z.object({
 			title: z.string(),
@@ -11,9 +11,11 @@ const interiors = defineCollection({
 			images: z.array(z.string().optional()).optional(),
 			interiorDesign: z.string().optional(),
 			photography: z.string().optional(),
+			asSeenIn: z.string().optional(),
 			styling: z.string().optional(),
 			produced: z.string().optional(),
 			updatedDate: z.coerce.date().optional(),
+			locale: z.enum(['ru', 'en']),
 		}),
 });
 
@@ -22,16 +24,16 @@ const before_after = defineCollection({
 	loader: glob({ base: './src/content/before-after', pattern: '**/*.{md,mdx}' }),
 	schema: ({ image }) =>
 		z.object({
-			before: z.string(),
-			after: z.string(),
+			before: image(),
+			after: image(),
 		}),
 });
-
 
 const press = defineCollection({
 	loader: glob({ base: './src/content/press', pattern: '**/*.{md,mdx}' }),
 	schema: ({ image }) =>
 		z.object({
+			id: z.number(),
 			title: z.string(),
 			type: z.string(),
 			link: z.string().url().optional(),

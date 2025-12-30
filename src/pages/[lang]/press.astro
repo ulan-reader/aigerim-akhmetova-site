@@ -1,0 +1,157 @@
+---
+import { t, locales } from "../../utils/i18n";
+const { currentLocale } = Astro;
+const locale = (currentLocale || "en") as "ru" | "en";
+
+export function getStaticPaths() {
+  return locales.map(lang => ({
+    params: { lang }
+  }));
+}
+
+const lang = Astro.params.lang;
+
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const presses = (await getCollection("press")).sort((a, b) => a.data.id - b.data.id);
+import { Image } from 'astro:assets';
+
+---
+<BaseLayout title={t(locale, "press.title")}>
+    <main>
+        <section class="grid-list">
+            <ul class="press-list">
+                {presses.map((press) => (
+                    <a href={press.data.link} target="_blank" rel="noopener noreferrer">
+                        <li class="press-item">
+                            {press.data.heroImage && (
+                                <Image
+                                    alt={press.data.title}
+                                    src={press.data.heroImage}
+                                />
+                            )}
+                            <h2>{press.data.title}</h2>
+                            {/* <p>{press.data.type}</p> */}
+                        </li>
+                    </a>
+                ))}
+            </ul>
+        </section>
+
+    </main>
+</BaseLayout>
+
+
+
+<style>
+    main {
+        overflow: visible;
+        min-width: 200px;
+        width: 100%;
+        max-width: 1800px;
+        box-sizing: border-box;
+        
+        margin: 0 auto;
+        padding: calc(25vmax / 10);
+        
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Arial', sans-serif;
+    }
+
+    h2 {
+        margin: 0;
+        font-family: 'Ivy Ora';
+        font-size: 23px; 
+        line-height: 1.2em;
+        font-weight: 400;
+    }
+
+    p {
+        width: 100%;
+        margin: 0;
+    }
+
+    .press-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 80px 60px;
+        margin: 0;
+    }
+
+
+    .press-list a {
+        width: 270px;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .press-item {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: start;
+        transition: transform 0.3s ease;
+    }
+    
+    .press-item:hover {
+        transform: translateY(-4px);
+    }
+
+    .press-item img {
+        width: 100%;
+        aspect-ratio: 3 / 4; /* соотношение сторон 3:4 */
+        height: auto;
+        object-fit: cover; /* обрезает лишнее */
+        border-radius: 8px;
+        background: #eee;
+    }
+
+    .press-item h2 {
+        font-family: ivyora-display, serif;
+        font-style: normal;
+        font-weight: 300;
+        font-size: 23px;
+        line-height: 1.2em;
+        margin: 12px 0 0;
+        padding: 0;
+    }
+
+    .press-item p {
+        font-family: 'Montreal Book';
+        font-size: 14px;
+        line-height: 1.4em;
+        margin-top: 6px;
+    }
+
+    @media (max-width: 633px) {
+        .press-list {
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .press-list a {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .press-item img {
+            aspect-ratio: 3 / 4;
+            width: 100%;
+            height: auto;
+        }
+
+        .press-item h2 {
+            font-size: 20px;
+        }
+    }
+    
+</style>

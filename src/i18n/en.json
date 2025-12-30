@@ -1,0 +1,105 @@
+{
+    "lang": {
+        "ru": "Russian",
+        "en": "English",
+        "kz": "Kazakh"
+    },
+    "carousel": {
+        "title": "AIGERIM AKHMETOVA",
+        "slides": {
+            "slide1": {
+                "title": "Spaces Tell Stories",
+                "text": "I Shape Them",
+                "button": "VIEW PORTFOLIO"
+            },
+            "slide2": {
+                "title": "Transformation lives in the details",
+                "text": "",
+                "button": "EXPLORE PROJECTS"
+            },
+            "slide3": {
+                "title": "A Point of View in Every Space",
+                "text": "",
+                "button": "DISCOVER MORE"
+            },
+            "slide4": {
+                "title": "Spaces That Begin With People",
+                "text": "",
+                "button": "CONTACT ME"
+            }
+        }
+    },
+    "links": {
+        "about": "ABOUT",
+        "interiors": "STYLING AND PRODUCING",
+        "before-after": "BEFORE & AFTER",
+        "contact": "CONTACT",
+        "press": "PRESS"
+    },
+    "footer": {  
+        "email": "aigerim.mamyraliyeva@gmail.com",
+        "phone": "+3465820741",
+        "name": "AIGERIM AKHMETOVA",
+        "desc": "Interior Stylist & Decorator"
+    },
+    "about": {
+        "title": "About Aigerim Akhmetova",
+        "hero": {
+            "name": "AIGERIM AKHMETOVA",
+            "desc": "Interior Stylist & Decorator"
+        },
+        "quote": "From Concept to Cover: The Art of Honoring & Amplifying Every Interior's Unique Story",
+        "p_1_text": "My passion for transforming spaces began with a foundation in Arts and Architecture. I bring 4 years of experience in interior design and 3 years specializing in interior photography and styling, collaborating closely with leading photographers and designers. To date, I have styled and directed 200+ interior shoots. This experience has led to numerous international publications in Architectural Digest, ELLE Decoration, New York Times, House & Garden and more.",
+        "p_2_text": "My mission is to help every project reach its highest visual potential and gain global recognition.",
+        "em_1_text": "I believe every interior has a story to tell and it deserves to be expressed with precision and beauty. Let’s connect!",
+        "select_clients": "SELECT CLIENT LIST"
+    },
+    "before_after": {
+        "title": "Before and After",
+        "before": "BEFORE",
+        "after": "AFTER",
+        "subtitle": {
+            "first": "Let’s take a closer look at the transformation.",
+            "second": "Where subtle changes create a powerful shift."
+        }
+    },
+    "contact": {
+        "title": "Contact",
+        "header": {
+            "line1": "Drop me a message!",
+            "line2": "Whether you have a question, a styling project or just want to connect. I’m always excited to hear from you",
+            "line3": "Coffee lovers welcome!"
+        },
+        "form": {
+            "required": "(required)",
+            "name": "Name",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "Email",
+            "message": "Message",
+            "phone": "Phone",
+            "submit": "Send"
+        },
+        "services": {
+            "legend": "Which service(s) are you looking for?",
+            "interiorStyling": "Interior Styling",
+            "consulting": "Consulting",
+            "setStyling": "Set Styling for Interior Shoots",
+            "seasonalDecoration": "Seasonal and Holiday Decoration",
+            "prSupport": "PR Support for Publications"
+        }
+    },
+    "press": {
+        "title": "Press"
+    },
+    "interiors": {
+        "title": "Interiors",
+        "slug": {
+            "published": "Published in",
+            "interior_design": "Interior Design",
+            "photography": "Photography",
+            "styling": "Styling",
+            "produced_by": "Produced by"
+        }
+    }
+}

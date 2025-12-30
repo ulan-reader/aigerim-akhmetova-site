@@ -1,30 +1,35 @@
 ---
+import { t, withLocale } from "../utils/i18n";
+const { currentLocale } = Astro;
+const locale = (currentLocale || "en") as "ru" | "en";
+
+
 const links = [
-    { href: "/about", label: "ABOUT" },
-    { href: "/interiors", label: "STYLING AND PRODUCING" },
-    { href: "/before-after", label: "BEFORE & AFTER" },
-    { href: "/contact", label: "CONTACT" },
-    { href: "/press", label: "PRESS" },
+    { href: withLocale(locale, `/about`), label: t(locale, "links.about") },
+    { href: withLocale(locale, `/interiors`), label: t(locale, "links.interiors") },
+    { href: withLocale(locale, `/before-after`), label: t(locale, "links.before-after") },
+    { href: withLocale(locale, `/contact`), label: t(locale, "links.contact") },
+    { href: withLocale(locale, `/press`), label: t(locale, "links.press") },
 ];
 ---
 
 <footer>
     <div class="contact">
         <a>
-            aigerim.mamyraliyeva@gmail.com
+            {t(locale, "footer.email")}
         </a>
         <a>
-            +3465820741
+            {t(locale, "footer.phone")}
         </a>
     </div>
 
     <div class="main">
         <h3>
-AIGERIM AKHMETOVA
+            {t(locale, "footer.name")}
         </h3>
         <p>
             <em>
-Interior Stylist & Decorator
+                {t(locale, "footer.desc")}
             </em>
         </p>
     </div>
@@ -98,101 +103,3 @@ Interior Stylist & Decorator
     }
     
 </style>
-
-
-<!-- ---
-
-const links = [
-    { href: 'https://www.benjamin-johnston.com/about', text: 'Instagram' },
-    { href: 'https://www.benjamin-johnston.com/contact', text: 'Pinterest' },
-    { href: 'https://www.benjamin-johnston.com/contact', text: 'Youtube' },
-    { href: 'https://www.benjamin-johnston.com/contact', text: 'Facebook' },
-]
-
----
-<style>
-    footer {
-		width: 100%;
-		box-sizing: border-box;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #000;
-        color: #ffffff;
-        font-size: 0.875rem;
-        padding: calc(25vmax / 10);
-    }
-
-    img {
-        width: 130px;
-        height: 100%;
-        height: auto;
-        overflow: hidden;
-        overflow: clip;
-    }
-    
-    p, a {
-        font-family: 'Montreal Book', sans-serif;
-        font-size: 12px;
-        color: #ffffff;
-        text-decoration: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .footer-logo-left  {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        width: fit-content;
-    }
-
-    .left{
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .links {
-        display: flex;
-        flex-direction: row;
-        gap: 7px;
-    }
-
-    @media (max-width: 768px) {
-        footer {
-            padding: 1.3rem;
-        }
-        .footer-logo-left {
-            margin-bottom: 1rem;
-        }
-
-        img {
-            width: 98px;
-            height: 144px;
-            overflow: hidden;
-            overflow: clip;
-        }
-    }
-</style>
-
-<footer>
-    <div class="footer-logo-left">
-        <div class="left">
-            <p>+1 (224) 309 7555</p>
-            <a href="/">Baimakhanassel@gmail.com</a>
-        </div>
-        <div class="links">
-            {links.map((link) => (
-                <a href={link.href}>
-                    {link.text}
-                </a>
-            ))}
-        </div>
-    </div>
-    <div class="footer-logo-right">
-        <a href="/">
-            <img src="https://images.squarespace-cdn.com/content/v1/63dafa7f53fc5e6e59e57df6/bd7e52eb-71cf-4020-aba9-4d77f02f6516/BJD-Logomark-RGB-WHITE.png" />
-        </a>
-    </div>
-</footer> -->

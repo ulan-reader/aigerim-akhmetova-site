@@ -1,0 +1,20 @@
+---
+import { locales } from "../../utils/i18n";
+
+export function getStaticPaths() {
+  return locales.map(lang => ({
+    params: { lang }
+  }));
+}
+
+const lang = Astro.params.lang;
+
+
+import Carousel from '../../components/Carousel.astro';
+export const prerender = true;
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Carousel />

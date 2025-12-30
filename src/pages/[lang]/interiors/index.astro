@@ -1,0 +1,132 @@
+---
+import { t, withLocale, locales } from "../../../utils/i18n";
+const { currentLocale } = Astro;
+const locale = (currentLocale || "en") as "ru" | "en";
+
+export function getStaticPaths() {
+  return locales.map(lang => ({
+    params: { lang }
+  }));
+}
+
+const lang = Astro.params.lang;
+
+
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+const interiors = (await getCollection('interiors')).sort((a, b) => a.data.position - b.data.position);
+---
+<BaseLayout title={t(locale, "interiors.title")}>
+    <div class="interiors">
+        <div class="section">
+            {interiors.map((interior, index) => (
+                <a href={withLocale(locale, `/interiors/${interior.id}`)} class="interior">
+                    <div class="interior-link">
+                        <div class="image-wrapper">
+                        {interior.data.mainPhoto && (
+                            <Image
+                                src={interior.data.mainPhoto}
+                                alt={interior.data.title}
+                            />
+                        )}
+                        </div>
+                        {/* <h4>{interior.data.title}</h4> */}
+                    </div>
+                </a>
+            ))}
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+    .interiors {
+        /* max-width: 900px; */
+        margin: 10px auto;
+        padding: 40px;
+
+    }
+
+    .interior {
+        /* flex: 1 1 calc(33.333% - 1rem); */
+        /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+        /* border-radius: 4px; */
+        overflow: hidden;
+    }
+
+    .interior h4 {
+        margin: 0.5rem;
+        font-size: 1.25rem;
+    }
+
+    .section {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        row-gap: 30px;
+        /* grid-row: auto; */
+        padding: 50px 0;
+        opacity: 1;
+        position: relative;
+        /* max-width: 250px; */
+    }
+
+    
+
+    .interior-link img {
+        width: 100%;
+        aspect-ratio: 2 / 3;
+        object-fit: cover;
+        display: block; /* чтобы не было лишних пробелов */
+        max-height: auto; /* чтобы изображение не превышало высоту контейнера */
+    }
+
+
+    a {
+        text-decoration: none;
+    }
+
+    .interior-link h4 {
+        font-family: "Asap";
+        font-size: 13px;
+        line-height: 1.6em;
+        text-transform: none;
+        text-decoration: none;
+        letter-spacing: 0px;
+        text-align: center;
+        font-weight: 400;
+        font-style: normal;
+        color: #787878;
+    }
+
+    .image-wrapper {
+        aspect-ratio: 2 / 3;   /* держим одинаковую высоту */
+        width: 100%;
+        overflow: hidden;
+        /* border-radius: 4px; */
+    }
+
+    .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;      /* картинка обрезается, но форма сохраняется */
+        display: block;
+    }
+
+
+    
+    @media (max-width: 768px) {
+        .interiors { 
+            padding: 20px;
+        }
+
+        .section {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            row-gap: 20px;
+        }
+    }
+
+
+
+</style>

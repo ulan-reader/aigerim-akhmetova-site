@@ -1,8 +1,252 @@
 ---
-import Carousel from '../components/Carousel.astro';
+const defaultLocale = 'en';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from 'astro:assets';
+import { t, withLocale, locales } from "../utils/i18n";
+
+import firstImage from "../assets/clients/FM_PresidentPark_6_optimized.webp";
+import secondImage from "../assets/clients/FM_PresidentPark_46_optimized.webp";
+import thirdImage from "../assets/clients/OM_ZH_34_optimized.webp";
+import fourthImage from "../assets/clients/Vertical_FPV_20_optimized.webp";
+
+const locale = locales.includes(defaultLocale) ? (defaultLocale as "ru" | "en") : "en";
+
+const slides = [
+  {
+    image: firstImage,
+    title: t(locale, "carousel.slides.slide1.title"),
+    text: t(locale, "carousel.slides.slide1.text"),
+    button: t(locale, "carousel.slides.slide1.button"),
+    link: withLocale(locale, `/before-after`)
+  },
+  {
+    image: secondImage,
+    title: t(locale, "carousel.slides.slide2.title"),
+    text: t(locale, "carousel.slides.slide2.text"),
+    button: t(locale, "carousel.slides.slide2.button"),
+    link: withLocale(locale, `/interiors`)
+  },
+  {
+    image: thirdImage,
+    title: t(locale, "carousel.slides.slide3.title"),
+    text: t(locale, "carousel.slides.slide3.text"),
+    button: t(locale, "carousel.slides.slide3.button"),
+    link: withLocale(locale, `/about`)
+  },
+  {
+    image: fourthImage,
+    title: t(locale, "carousel.slides.slide4.title"),
+    text: t(locale, "carousel.slides.slide4.text"),
+    button: t(locale, "carousel.slides.slide4.button"),
+    link: withLocale(locale, `/contact`)
+  }
+];
 ---
 
-<Carousel />
+<BaseLayout title={t(locale, "carousel.title")}>
+  <div class="page">
+    <div class="hero-carousel">
+      {slides.map((slide, i) => (
+        <div class="slide" data-index={i}>
+          <Image
+            src={slide.image}
+            alt={slide.title}
+            loading={i === 0 ? "eager" : "lazy"}
+            decoding="async"
+            width={1920}
+            height={1080}
+            format="webp"
+            quality={80}
+            class="background-image"
+          />
+          <div class="content">
+            <h1>{slide.title}</h1>
+            <p>{slide.text}</p>
+            <a href={`${slide.link}`}>{slide.button}</a>
+          </div>
+        </div>
+      ))}
+      <button class="nav prev" id="prevBtn">‹</button>
+      <button class="nav next" id="nextBtn">›</button>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+.hero-carousel {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  margin: 0;
+  padding: 0;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* Обрезает, но полностью закрывает область */
+  object-position: center;
+  position: absolute;     /* Добавлено: чтобы перекрывать весь слайд */
+  top: 0;
+  left: 0;
+  /* Эффект лёгкого зума при появлении */
+  transform: scale(1.06);
+  transition: transform 1.4s ease;
+}
+
+.slide.active .background-image {
+  transform: scale(1);
+}
+
+/* Контент поверх изображения */
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 3;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+  width: 90%;
+  max-width: 1200px;
+}
+
+/* Остальные твои стили без изменений */
+.content h1 { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; }
+.content p { font-size: 1.2rem; font-weight: 400; }
+
+.content a {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 14px 36px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.8);
+  border-radius: 50px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(6px);
+  text-decoration: none;
+  transition: 
+    color 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.4s ease;
+  animation: fadeUp 1s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.slide.active .content a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.content a:hover {
+  background: rgba(255,255,255,0.9);
+  color: #000;
+  border-color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(255,255,255,0.25);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+.nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.4);
+    color: white;
+    border: none;
+    font-size: 36px;
+    cursor: pointer;
+    padding: 6px 12px;
+    z-index: 5;
+    transition: background 0.3s;
+    border-radius: 4px;
+}
+
+.nav:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+.footer {
+  background: #111;
+  color: #aaa;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .content h1 { font-size: 2rem; }
+  .content p { font-size: 1rem; }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const slides = document.querySelectorAll('.slide');
+  const next = document.getElementById('nextBtn');
+  const prev = document.getElementById('prevBtn');
+  let current = 0;
+  let timer: any;
+
+  const showSlide = (index: any) => {
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+  };
+
+  const nextSlide = () => {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+    resetAuto();
+  };
+
+  const prevSlide = () => {
+    current = (current - 1 + slides.length) % slides.length;
+    showSlide(current);
+    resetAuto();
+  };
+
+  const startAuto = () => timer = setInterval(nextSlide, 5000);
+  const resetAuto = () => { clearInterval(timer); startAuto(); };
+
+  if (next && prev && slides.length) {
+    next.onclick = nextSlide;
+    prev.onclick = prevSlide;
+    showSlide(0);
+    startAuto();
+  }
+});
+</script>
