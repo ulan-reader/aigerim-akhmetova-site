@@ -9,10 +9,10 @@ export function getStaticPaths() {
   }));
 }
 
-const lang = Astro.params.lang;
-
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Footer from "../../components/Footer.astro";
+
+const lang = Astro.params.lang;
 
 ---
 <BaseLayout title={t(locale, "contact.title")}>
@@ -104,39 +104,44 @@ import Footer from "../../components/Footer.astro";
             </form>
         </div>
     </div>
-<!-- <script>
-    const form = document.getElementById("contactForm");
+    <script>
+        let contactForm2 = document.getElementById("contactForm");
+        if (contactForm2) {
+            contactForm2.addEventListener("submit", async (e) => {
+                e.preventDefault();
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+                let form = e.target as HTMLFormElement;
+                if (form ==null) return;
 
-        const formData = new FormData(form);
+                let formData = new FormData(form);
+                const services: any[] = [];
+                form.querySelectorAll('input[name="service"]:checked')
+                    .forEach(cb => services.push((cb as HTMLInputElement).value));
+                
+                const payload = {
+                    firstName: formData.get("fname"),
+                    lastName: formData.get("lname"),
+                    email: formData.get("email"),
+                    message: formData.get("message"),
+                    services
+                };
+                const res = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
 
-        const services = formData
-        .getAll("service");
-
-        const payload = {
-            fname: formData.get("fname"),
-            lname: formData.get("lname"),
-            email: formData.get("email"),
-            message: formData.get("message"),
-            services
-        };
-
-        const res = await fetch("https://contact-form-worker.your-name.workers.dev", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-
-        if (res.ok) {
-            alert("Message sent successfully ✨");
-            form.reset();
-        } else {
-            alert("Something went wrong");
+                if (res.ok) {
+                    alert("Message sent!")
+                    form.reset()
+                } else {
+                    alert("Error sending message")
+                }
+            });
         }
-    });
-</script> -->
+
+</script>
+
 
 </BaseLayout>
 <!-- <Footer /> -->
