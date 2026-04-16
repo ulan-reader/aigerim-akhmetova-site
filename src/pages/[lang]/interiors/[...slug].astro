@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import { t, locales } from '../../../utils/i18n';
+import ImageCarousel from "../../../components/MiniCarousel.astro";
 
 // Получаем текущую локаль из params
 const lang = Astro.params.lang as 'ru' | 'en';
@@ -59,43 +60,49 @@ export const prerender = true;
       <!-- Main content with carousel and description side by side -->
       <div class="content-wrapper">
         <!-- Carousel Section -->
-        <div class="carousel-section">
+         <ImageCarousel 
+          slides={allImages.map(img => ({ image: img, alt: title }))} 
+          type="gallery"
+          thumbnails={true}
+        />
+
+        <!-- <div class="carousel-section">
           <div class="carousel-container">
-            <!-- Previous button -->
+            Previous button
             <button class="carousel-btn prev-btn" aria-label="Previous image">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M15 18l-6-6 6-6"/>
               </svg>
             </button>
 
-            <!-- Carousel images -->
+            Carousel images
             <div class="carousel">
               <div class="carousel-track">
                 {allImages.map((img, index) => (
-					<div class={`carousel-slide ${index === 0 ? 'active' : ''}`} data-index={index}>
-						{typeof img === 'string' ? (
-							<img
-								src={img}
-								alt={`${title} - Image ${index + 1}`}
-								loading={index === 0 ? 'eager' : 'lazy'}
-								width={800}
-								height={600}
-							/>
-						) : (
-							<Image
-								src={img}
-								alt={`${title} - Image ${index + 1}`}
-								loading={index === 0 ? 'eager' : 'lazy'}
-								width={800}
-								height={600}
-							/>
-						)}
-					</div>
-				))}
+                  <div class={`carousel-slide ${index === 0 ? 'active' : ''}`} data-index={index}>
+                    {typeof img === 'string' ? (
+                      <img
+                        src={img}
+                        alt={`${title} - Image ${index + 1}`}
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        width={800}
+                        height={600}
+                      />
+                    ) : (
+                      <Image
+                        src={img}
+                        alt={`${title} - Image ${index + 1}`}
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        width={800}
+                        height={600}
+                      />
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
 
-            <!-- Next button -->
+            Next button
             <button class="carousel-btn next-btn" aria-label="Next image">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 18l6-6-6-6"/>
@@ -103,7 +110,7 @@ export const prerender = true;
             </button>
           </div>
 
-          <!-- Thumbnails -->
+          Thumbnails
           {allImages.length > 1 && (
             <div class="thumbnails">
               {allImages.map((img, index) => (
@@ -119,7 +126,7 @@ export const prerender = true;
               ))}
             </div>
           )}
-        </div>
+        </div> -->
 
         <!-- Description Section -->
         <div class="description-section">
@@ -393,7 +400,7 @@ export const prerender = true;
   }
 
   .project-title {
-    font-family: Helvetica, Arial, sans-serif;
+    /* font-family: Helvetica, Arial, sans-serif; */
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: var(--spacing-md);
@@ -429,7 +436,7 @@ export const prerender = true;
   }
 
   .project-description {
-    font-family: "Asap", sans-serif;
+    /* font-family: "Asap", sans-serif; */
     font-size: 1rem;
     line-height: 1.6;
     color: #444;
@@ -446,7 +453,7 @@ export const prerender = true;
     margin-top: var(--spacing-md);
     padding-top: var(--spacing-md);
     border-top: 1px solid #eee;
-    font-family: monospace;
+    /* font-family: monospace; */
     font-size: 1rem;
     color: #666;
   }

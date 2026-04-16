@@ -14,6 +14,27 @@ const lang = Astro.params.lang;
 import BaseLayout from "../../layouts/BaseLayout.astro"
 import { getCollection } from 'astro:content';
 const clients = (await getCollection('clients')); 
+import ImageCarousel from '../../components/MiniCarousel.astro';
+
+const slides = [
+    { image: '/assets/about/15_optimized.webp', alt: 'Interior styling example' },
+    { image: '/assets/about/1.jpeg', alt: 'Another view' },
+    { image: '/assets/about/2.JPG', alt: 'Another view' },
+    { image: '/assets/about/3.JPG', alt: 'Another view' },
+    { image: '/assets/about/4.JPG', alt: 'Another view' },
+    { image: '/assets/about/5.JPG', alt: 'Another view' },
+    { image: '/assets/about/6.JPG', alt: 'Another view' },
+    { image: '/assets/about/7.webp', alt: 'Another view' },
+    { image: '/assets/about/8.JPG', alt: 'Another view' },
+    { image: '/assets/about/9.JPG', alt: 'Another view' },
+    { image: '/assets/about/11.JPG', alt: 'Another view' },
+    { image: '/assets/about/12.webp', alt: 'Another view' },
+    { image: '/assets/about/13.webp', alt: 'Another view' },
+    { image: '/assets/about/14.JPG', alt: 'Another view' },
+    { image: '/assets/about/15.JPG', alt: 'Another view' },
+    { image: '/assets/about/16.JPG', alt: 'Another view' },
+    { image: '/assets/about/17.JPG', alt: 'Another view' },
+];
 
 ---
 
@@ -27,15 +48,19 @@ const clients = (await getCollection('clients'));
         <section class="about">
             <div class="about-grid">
                 <div class="about-image">
-                    <img alt="Interior styling example" src="/assets/15.jpg"/>
+                    <ImageCarousel slides={slides} type='main' />
                 </div>
+
+                <!-- <div class="about-image">
+                    <img alt="Interior styling example" src="/assets/15_optimized.webp"/>
+                </div> -->
                 <div class="about-text">
                     <p class="about-quote">
-                        <em>{t(locale, "about.quote")}</em>
+                        {t(locale, "about.quote")}
                     </p>
                     <p>{t(locale, "about.p_1_text")}</p>
                     <p>{t(locale, "about.p_2_text")}</p>
-                    <p><em>{t(locale, "about.em_1_text")}</em></p>
+                    <p>{t(locale, "about.em_1_text")}</p>
                 </div>
             </div>
         </section>
@@ -135,7 +160,7 @@ const clients = (await getCollection('clients'));
         padding: 48px 16px;
         text-align: center;
         /* background: linear-gradient(180deg,#fbfbfd,#f3f7ff); */
-        font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        /* font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; */
         color: #111827;
     }
 
@@ -245,7 +270,7 @@ const clients = (await getCollection('clients'));
 
 
     .page {
-        font-family: 'Inter', sans-serif;
+        /* font-family: 'Inter', sans-serif; */
         color: #222;
         line-height: 1.6;
     }
@@ -256,14 +281,14 @@ const clients = (await getCollection('clients'));
         padding: 6vmax 2rem 4vmax;
         background: black;
         color: white;
-        background-image: url('/assets/FM_PresidentPark_13.jpg');
+        background-image: url('/assets/FM_PresidentPark_13_optimized.webp');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
     }
     .hero h1 {
         font-size: clamp(2rem, 4vw, 3rem);
-        font-family: 'GS Black', sans-serif;
+        /* font-family: 'GS Black', sans-serif; */
         letter-spacing: 1px;
         margin: 0;
         line-height: 100%;
@@ -288,7 +313,7 @@ const clients = (await getCollection('clients'));
     }
     .about-quote {
         font-size: clamp(1.25rem, 2vw, 1.75rem);
-        font-style: italic;
+        /* font-style: italic; */
         margin-bottom: 1.5rem;
         color: #444;
     }
@@ -308,7 +333,7 @@ const clients = (await getCollection('clients'));
     }
     .clients h2 {
         font-size: clamp(1.75rem, 2.5vw, 2.5rem);
-        font-family: 'Orpheus Pro', serif;
+        /* font-family: 'Orpheus Pro', serif; */
         margin: 0;
     }
 
@@ -350,6 +375,10 @@ const clients = (await getCollection('clients'));
     }
 
     @media (max-width: 768px) {
+        .about {
+            padding: 3vmax 1rem;
+        }
+
         .about-grid {
             grid-template-columns: 1fr;
         }

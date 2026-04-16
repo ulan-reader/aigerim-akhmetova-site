@@ -7,20 +7,20 @@ const locale = (currentLocale || "en") as "ru" | "en";
 const links = [
     { href: withLocale(locale, `/about`), label: t(locale, "links.about") },
     { href: withLocale(locale, `/interiors`), label: t(locale, "links.interiors") },
+    { href: withLocale(locale, `/press`), label: t(locale, "links.press") },
     { href: withLocale(locale, `/before-after`), label: t(locale, "links.before-after") },
     { href: withLocale(locale, `/contact`), label: t(locale, "links.contact") },
-    { href: withLocale(locale, `/press`), label: t(locale, "links.press") },
 ];
 
 import LanguageSwitcher from './LanguageSwitcher.astro';
 ---
 <header>
     <div class="container">
-        <div class="logo"><a href="/" style="text-decoration: none; color: inherit;">AIGERIM<br /> AKHMETOVA</a></div>
+        <div class="logo"><a href="/" style="text-decoration: none; color: inherit; line-height: 1.1;">AIGERIM<br /> AKHMETOVA</a></div>
         <div class="navigation">
             <div class="path">
                 {links.map(link => (
-                    <a href={link.href} class={pathname === link.href ? 'active' : ''}>
+                    <a href={link.href} class={pathname === link.href ? 'active' : ''} >
                         {link.label}
                     </a>
                 ))}
@@ -121,6 +121,13 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
         gap: 20px;
     }
 
+    .logo a {
+        text-decoration: none;
+        color: inherit;
+        line-height: 1.1;
+        display: inline-block;
+    }
+
     .logo {
         font-size: 1.5rem;
         font-weight: 900;
@@ -152,7 +159,7 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
     .path {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 1.2rem;
     }
 
     .social {
@@ -220,7 +227,7 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
     }
 
     .burger.open .top {
-        transform: rotate(45deg) translate(5px, 5px);
+        transform: translateY(8px) rotate(45deg);
     }
 
     .burger.open .middle {
@@ -228,7 +235,7 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
     }
 
     .burger.open .bottom {
-        transform: rotate(-45deg) translate(5px, -5px);
+        transform: translateY(-8px) rotate(-45deg);
     }
 
     .mobile-menu.open a:nth-child(1) { animation-delay: 0.1s; }

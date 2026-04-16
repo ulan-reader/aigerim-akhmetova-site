@@ -85,7 +85,7 @@ import sharp from "sharp";
 
 const folder = process.cwd();
 const MAX_WIDTH = 2000;
-const WEBP_QUALITY = 75;
+const WEBP_QUALITY = 100;
 
 async function optimizeImage(filePath) {
   const ext = path.extname(filePath).toLowerCase();

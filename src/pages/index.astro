@@ -5,10 +5,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from 'astro:assets';
 import { t, withLocale, locales } from "../utils/i18n";
 
-import firstImage from "../assets/clients/FM_PresidentPark_6_optimized.webp";
-import secondImage from "../assets/clients/FM_PresidentPark_46_optimized.webp";
+import firstImage from "../assets/clients/FM_PresidentPark_6_optimized.jpg";
+import secondImage from "../assets/clients/FM_PresidentPark_46_optimized.jpg";
 import thirdImage from "../assets/clients/OM_ZH_34_optimized.webp";
-import fourthImage from "../assets/clients/Vertical_FPV_20_optimized.webp";
+import fourthImage from "../assets/clients/FM_Miracle_78.jpg";
 
 const locale = locales.includes(defaultLocale) ? (defaultLocale as "ru" | "en") : "en";
 
@@ -18,14 +18,14 @@ const slides = [
     title: t(locale, "carousel.slides.slide1.title"),
     text: t(locale, "carousel.slides.slide1.text"),
     button: t(locale, "carousel.slides.slide1.button"),
-    link: withLocale(locale, `/before-after`)
+    link: withLocale(locale, `/interiors`)
   },
   {
     image: secondImage,
     title: t(locale, "carousel.slides.slide2.title"),
     text: t(locale, "carousel.slides.slide2.text"),
     button: t(locale, "carousel.slides.slide2.button"),
-    link: withLocale(locale, `/interiors`)
+    link: withLocale(locale, `/before-after`)
   },
   {
     image: thirdImage,
@@ -71,19 +71,21 @@ const slides = [
       <button class="nav next" id="nextBtn">›</button>
     </div>
   </div>
+  <div style="height: 80px; width: auto; margin: 0; padding: 0"></div>
+
 </BaseLayout>
 
 <style>
   .page {
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
   }
 .hero-carousel {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: calc(100vh + 80px);
   overflow: hidden;
   background: #000;
   margin: 0;

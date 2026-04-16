@@ -5,11 +5,11 @@
         "kz": "Kazakh"
     },
     "carousel": {
-        "title": "AIGERIM AKHMETOVA",
+        "title": "AIGERIM AKHMETOVA | Austin Interior Stylist",
         "slides": {
             "slide1": {
-                "title": "Spaces Tell Stories",
-                "text": "I Shape Them",
+                "title": "Spaces tell stories that I help give form",
+                "text": "",
                 "button": "VIEW PORTFOLIO"
             },
             "slide2": {
@@ -18,9 +18,9 @@
                 "button": "EXPLORE PROJECTS"
             },
             "slide3": {
-                "title": "A Point of View in Every Space",
+                "title": "Completing interiors through styling and detail",
                 "text": "",
-                "button": "DISCOVER MORE"
+                "button": "ABOUT ME"
             },
             "slide4": {
                 "title": "Spaces That Begin With People",
